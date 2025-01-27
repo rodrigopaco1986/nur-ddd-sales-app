@@ -6,6 +6,7 @@ use Src\Sales\Payment\Domain\Entities\PaymentSchedule as PaymentScheduleEntity;
 use Src\Sales\Payment\Domain\ValueObject\PaymentStatus;
 use Src\Sales\Payment\Infraestructure\Models\PaymentSchedule as EloquentPaymentSchedule;
 use Src\Sales\Shared\Domain\ValueObject\Currency;
+use Src\Sales\Shared\Domain\ValueObject\Money;
 
 class PaymentScheduleMapper
 {
@@ -13,10 +14,9 @@ class PaymentScheduleMapper
     {
         $paymentScheduleEntity = new PaymentScheduleEntity(
             $paymentSchedule->number,
-            $paymentSchedule->amount,
+            new Money($paymentSchedule->amount, new Currency($paymentSchedule->currency)),
             $paymentSchedule->due_date,
             new PaymentStatus($paymentSchedule->status),
-            new Currency($paymentSchedule->currency),
             $paymentSchedule->order_id,
         );
         $paymentScheduleEntity->setId($paymentSchedule->id);

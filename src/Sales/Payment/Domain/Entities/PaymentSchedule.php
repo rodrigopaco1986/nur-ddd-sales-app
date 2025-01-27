@@ -4,7 +4,7 @@ namespace Src\Sales\Payment\Domain\Entities;
 
 use DateTimeImmutable;
 use Src\Sales\Payment\Domain\ValueObject\PaymentStatus;
-use Src\Sales\Shared\Domain\ValueObject\Currency;
+use Src\Sales\Shared\Domain\ValueObject\Money;
 
 class PaymentSchedule
 {
@@ -12,27 +12,24 @@ class PaymentSchedule
 
     public function __construct(
         private int $number,
-        private float $amount,
+        private Money $amount,
         private DateTimeImmutable $dueDate,
         private PaymentStatus $status,
-        private Currency $currency,
         private string $orderId,
     ) {}
 
     /**
      * Get the value of id
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
     /**
      * Set the value of id
-     *
-     * @return self
      */
-    public function setId($id)
+    public function setId($id): PaymentSchedule
     {
         $this->id = $id;
 
@@ -42,7 +39,7 @@ class PaymentSchedule
     /**
      * Get the value of number
      */
-    public function getNumber()
+    public function getNumber(): int
     {
         return $this->number;
     }
@@ -50,7 +47,7 @@ class PaymentSchedule
     /**
      * Get the value of dueDate
      */
-    public function getDueDate()
+    public function getDueDate(): DateTimeImmutable
     {
         return $this->dueDate;
     }
@@ -58,15 +55,15 @@ class PaymentSchedule
     /**
      * Get the value of amount
      */
-    public function getAmount()
+    public function getAmount(): float
     {
-        return $this->amount;
+        return $this->amount->amount();
     }
 
     /**
      * Get the value of status
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status->getStatus();
     }
@@ -74,7 +71,7 @@ class PaymentSchedule
     /**
      * Get the value of orderId
      */
-    public function getOrderId()
+    public function getOrderId(): string
     {
         return $this->orderId;
     }
@@ -82,8 +79,8 @@ class PaymentSchedule
     /**
      * Get the value of currency
      */
-    public function getCurrency()
+    public function getCurrency(): string
     {
-        return $this->currency->getIsoCode();
+        return $this->amount->currency()->getIsoCode();
     }
 }

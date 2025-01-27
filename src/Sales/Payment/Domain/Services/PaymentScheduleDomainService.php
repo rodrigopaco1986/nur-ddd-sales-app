@@ -12,6 +12,7 @@ use Src\Sales\Payment\Domain\Exceptions\ValueException;
 use Src\Sales\Payment\Domain\Repositories\PaymentScheduleRepositoryInterface;
 use Src\Sales\Payment\Domain\ValueObject\PaymentStatus;
 use Src\Sales\Shared\Domain\ValueObject\Currency;
+use Src\Sales\Shared\Domain\ValueObject\Money;
 
 class PaymentScheduleDomainService
 {
@@ -45,10 +46,9 @@ class PaymentScheduleDomainService
             $date = $date->modify('+1 month');
             $paymentSchedule = new PaymentSchedule(
                 $i,
-                $amount,
+                new Money($amount, new Currency($orderInfo->getCurrency())),
                 $date,
                 PaymentStatus::PENDING(),
-                new Currency($orderInfo->getCurrency()),
                 $orderInfo->getId(),
             );
             $payments[] = $paymentSchedule;
