@@ -293,15 +293,24 @@ Examples are when running project in localhost (php artisan serve). Update the h
     }
 }
 ```
+## Tests
+- To run only unit tests
+```bash
+php artisan test --testsuite=Unit
+```
 
+- To run all tests (feature and unit tests)
+```bash
+php artisan test
+```
 
-### TODO
-- Update class diagram
-- Register payment from patient
-- Add tests (feature and unit tests)
-- Enable queues to send async invoice by email once is generated
 ## Dev notes
 ### Linter the code:
 ```bash
 ./vendor/bin/pint
 ```
+
+## TODO
+- Register payment from patient (wip)
+- Add more tests (unit tests, integration tests and E2E tests)
+- Enable queues to send async invoice by email once is generated
