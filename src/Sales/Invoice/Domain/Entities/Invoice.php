@@ -3,6 +3,8 @@
 namespace Src\Sales\Invoice\Domain\Entities;
 
 use DateTimeImmutable;
+use Illuminate\Support\Str;
+use Src\Sales\Invoice\Domain\Exceptions\ValueException;
 use Src\Sales\Invoice\Domain\ValueObject\InvoiceStatus;
 use Src\Sales\Shared\Domain\ValueObject\Currency;
 
@@ -23,7 +25,11 @@ class Invoice
         private Currency $currency,
         private string $orderId,
         private array $items = [],
-    ) {}
+    ) {
+        if (! Str::isUuid($customerId)) {
+            throw new ValueException('Invalid customer id');
+        }
+    }
 
     /**
      * Get the value of id

@@ -2,13 +2,13 @@
 
 namespace Src\Sales\Payment\Infraestructure\Repositories;
 
+use DateTimeImmutable;
 use Src\Sales\Payment\Domain\Entities\PaymentRecord;
 use Src\Sales\Payment\Domain\Entities\PaymentSchedule;
 use Src\Sales\Payment\Domain\Repositories\PaymentRecordRepositoryInterface;
 use Src\Sales\Payment\Infraestructure\Mappers\PaymentRecordMapper;
 use Src\Sales\Payment\Infraestructure\Models\PaymentRecord as EloquentPaymentRecord;
 use Src\Sales\Shared\Domain\ValueObject\Currency;
-use DateTimeImmutable;
 use Src\Sales\Shared\Domain\ValueObject\Money;
 
 class PaymentRecordRepository implements PaymentRecordRepositoryInterface

@@ -2,6 +2,8 @@
 
 namespace Src\Sales\Order\Domain\ValueObject;
 
+use Src\Sales\Order\Domain\Exceptions\ValueException;
+
 class OrderStatus
 {
     private const CREATED = 'CREATED';
@@ -16,6 +18,10 @@ class OrderStatus
 
     public function __construct(string $status = 'CREATED')
     {
+        if (! in_array($status, [self::CREATED, self::PENDING, self::PAID, self::CANCELLED])
+        ) {
+            throw new ValueException('Invalid status');
+        }
         $this->status = $status;
     }
 

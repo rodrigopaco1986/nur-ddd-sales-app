@@ -3,7 +3,9 @@
 namespace Src\Sales\Order\Domain\Entities;
 
 use DateTimeImmutable;
+use Illuminate\Support\Str;
 use Src\Sales\Order\Domain\Exceptions\InvalidOrderItemException;
+use Src\Sales\Order\Domain\Exceptions\ValueException;
 use Src\Sales\Order\Domain\ValueObject\OrderStatus;
 use Src\Sales\Shared\Domain\ValueObject\Currency;
 
@@ -18,6 +20,10 @@ class Order
         private Currency $currency,
         private array $items = [],
     ) {
+        if (! Str::isUuid($patientId)) {
+            throw new ValueException('Invalid patient id');
+        }
+
         foreach ($items as $item) {
             if (! $item instanceof OrderItem) {
                 throw new InvalidOrderItemException;

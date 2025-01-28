@@ -7,9 +7,7 @@ use DateTimeImmutable;
 use Exception;
 use Src\Sales\Payment\Domain\Entities\PaymentRecord;
 use Src\Sales\Payment\Domain\Entities\PaymentSchedule;
-use Src\Sales\Payment\Domain\Exceptions\OrderNotFoundException;
 use Src\Sales\Payment\Domain\Exceptions\PaymentScheduleNotFoundException;
-use Src\Sales\Payment\Domain\Exceptions\ValueException;
 use Src\Sales\Payment\Domain\Repositories\PaymentRecordRepositoryInterface;
 use Src\Sales\Shared\Domain\ValueObject\Currency;
 use Src\Sales\Shared\Domain\ValueObject\Money;
@@ -44,7 +42,7 @@ class PaymentRecordDomainService
 
         $eloquentPaymentRecordModel = PaymentRecordMapper::toModel($paymentRecord);
         $eloquentPaymentRecordModel->save();
-        
+
         try {
 
             $paymentsEntitiesSaved = $this->paymentRecordRepository->save($paymentRecord);
@@ -55,5 +53,4 @@ class PaymentRecordDomainService
             throw new DomainException('Error saving payment record');
         }*/
     }
-    
 }

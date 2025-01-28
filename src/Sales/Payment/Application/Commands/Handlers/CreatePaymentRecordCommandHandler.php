@@ -5,13 +5,14 @@ namespace Src\Sales\Payment\Application\Commands\Handlers;
 use Src\Sales\Payment\Application\Commands\CreatePaymentRecordCommand;
 //use Src\Sales\Payment\Domain\Events\OrderCreatedEvent;
 use Src\Sales\Payment\Application\Services\OrderService;
-use Src\Sales\Payment\Domain\Repositories\PaymentScheduleRepositoryInterface;
-use Src\Sales\Payment\Domain\Repositories\PaymentRecordRepositoryInterface;
 use Src\Sales\Payment\Domain\Entities\PaymentRecord;
+use Src\Sales\Payment\Domain\Repositories\PaymentRecordRepositoryInterface;
+use Src\Sales\Payment\Domain\Repositories\PaymentScheduleRepositoryInterface;
 
 final class CreatePaymentRecordCommandHandler
 {
     private PaymentRecordRepositoryInterface $paymentRecordRepository;
+
     private PaymentScheduleRepositoryInterface $paymentScheduleRepository;
 
     private OrderService $orderService;
@@ -20,8 +21,7 @@ final class CreatePaymentRecordCommandHandler
         PaymentRecordRepositoryInterface $paymentRecordRepository,
         PaymentScheduleRepositoryInterface $paymentScheduleRepository,
         //OrderService $orderService
-    )
-    {
+    ) {
         $this->paymentRecordRepository = $paymentRecordRepository;
         $this->paymentScheduleRepository = $paymentScheduleRepository;
         //$this->orderService = $orderService;

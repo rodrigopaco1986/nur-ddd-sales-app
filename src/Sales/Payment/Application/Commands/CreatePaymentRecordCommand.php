@@ -8,23 +8,23 @@ class CreatePaymentRecordCommand
         private string $paymentScheduleId,
     ) {}
 
-        /**
-         * Get the value of paymentScheduleId
-         */ 
-        public function getPaymentScheduleId()
-        {
-                return $this->paymentScheduleId;
-        }
+    /**
+     * Get the value of paymentScheduleId
+     */
+    public function getPaymentScheduleId()
+    {
+        return $this->paymentScheduleId;
+    }
 
-        /**
-         * Set the value of paymentScheduleId
-         *
-         * @return  self
-         */ 
-        public function setPaymentScheduleId($paymentScheduleId)
-        {
-                $this->paymentScheduleId = $paymentScheduleId;
+    /**
+     * Set the value of paymentScheduleId
+     *
+     * @return self
+     */
+    public function setPaymentScheduleId($paymentScheduleId)
+    {
+        $this->paymentScheduleId = $paymentScheduleId;
 
-                return $this;
-        }
+        return $this;
+    }
 }

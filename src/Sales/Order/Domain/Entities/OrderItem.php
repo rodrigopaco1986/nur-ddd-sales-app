@@ -2,7 +2,8 @@
 
 namespace Src\Sales\Order\Domain\Entities;
 
-use Exception;
+use Illuminate\Support\Str;
+use Src\Sales\Order\Domain\Exceptions\ValueException;
 use Src\Sales\Shared\Domain\ValueObject\Money;
 
 class OrderItem
@@ -18,20 +19,24 @@ class OrderItem
         private Money $price,
         private Money $discount,
     ) {
+        if (! Str::isUuid($serviceId)) {
+            throw new ValueException('Invalid service id');
+        }
+
         if ($this->quantity < 0) {
-            throw new Exception('Order Item: Quantity cant be lower than zero for '.$this->serviceId);
+            throw new ValueException('Order Item: Quantity cant be lower than zero for '.$this->serviceId);
         }
 
         if ($this->price->amount() < 0) {
-            throw new Exception('Order Item: Price cant be lower than zero for '.$this->serviceId);
+            throw new ValueException('Order Item: Price cant be lower than zero for '.$this->serviceId);
         }
 
         if ($this->discount->amount() < 0) {
-            throw new Exception('Order Item: Discount cant be lower than zero for '.$this->serviceId);
+            throw new ValueException('Order Item: Discount cant be lower than zero for '.$this->serviceId);
         }
 
         if ($this->price->amount() * $this->quantity < $this->discount->amount()) {
-            throw new Exception('Order Item: Discount can\'t be lower than subtotal for '.$this->serviceId);
+            throw new ValueException('Order Item: Discount can\'t be lower than subtotal for '.$this->serviceId);
         }
     }
 

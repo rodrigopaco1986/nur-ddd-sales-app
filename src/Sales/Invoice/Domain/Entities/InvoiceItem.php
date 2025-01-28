@@ -4,6 +4,8 @@ namespace Src\Sales\Invoice\Domain\Entities;
 
 use Exception;
 use Src\Sales\Shared\Domain\ValueObject\Money;
+use Src\Sales\Invoice\Domain\Exceptions\ValueException;
+use Illuminate\Support\Str;
 
 class InvoiceItem
 {
@@ -18,6 +20,10 @@ class InvoiceItem
         private Money $price,
         private Money $discount,
     ) {
+        if (! Str::isUuid($serviceId)) {
+            throw new ValueException('Invalid service id');
+        }
+
         if ($this->quantity < 0) {
             throw new Exception('Invoice Item: Quantity cant be lower than zero for '.$this->serviceId);
         }
