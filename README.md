@@ -239,7 +239,7 @@ Examples are when running project in localhost (php artisan serve). Update the h
 ```
 
 4. Get an invoice with details
-- GET: [http://localhost:8000/order/view/{UUID}](http://localhost:8000/order/view/{UUID})
+- GET: [http://localhost:8000/invoice/view/{UUID}](http://localhost:8000/invoice/view/{UUID})
 - No expected input 
 - Response successfully returns the invoice
 ```
@@ -293,10 +293,67 @@ Examples are when running project in localhost (php artisan serve). Update the h
     }
 }
 ```
+
+5. Get payment scheduled details of an order
+- GET: [http://localhost:8000/payment/view-by-order/{UUID}](http://localhost:8000/payment/view-by-order/{UUID})
+- No expected input 
+- Response successfully returns the payment details of an order
+```
+{
+    "data": [
+        {
+            "payment": {
+                "id": "9e1e1e7d-2fe0-44fd-93b3-fc314cec4661",
+                "number": 1,
+                "amount": 400,
+                "due_date": "2025-03-02T18:46:17.000000Z",
+                "status": "PENDING",
+                "currency": "BOB",
+                "order_id": "9e1e1e7d-16b4-459c-9593-73d3e21d080e"
+            }
+        },
+        {
+            "payment": {
+                "id": "9e1e1e7d-3126-4e17-b3e0-3e83f248f45e",
+                "number": 2,
+                "amount": 400,
+                "due_date": "2025-04-02T18:46:17.000000Z",
+                "status": "PENDING",
+                "currency": "BOB",
+                "order_id": "9e1e1e7d-16b4-459c-9593-73d3e21d080e"
+            }
+        }
+    ]
+}
+```
+- Response with some error, like invalid id for the order
+```
+{
+    "errors": "Payment Scheduled not found"
+}
+```
+
 ## Tests
+
+### Run migrations for testing database
+```bash
+php artisan migrate --env=testing
+```
+
+### Run local server before running tests (to query external microservices)
+```bash
+php artisan serve
+```
+
+### Run tests
 - To run only unit tests
 ```bash
 php artisan test --testsuite=Unit
+```
+
+- To run only feature tests (integration)
+```bash
+php artisan test --testsuite Feature
 ```
 
 - To run all tests (feature and unit tests)

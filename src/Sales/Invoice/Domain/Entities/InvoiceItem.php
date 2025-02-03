@@ -3,9 +3,9 @@
 namespace Src\Sales\Invoice\Domain\Entities;
 
 use Exception;
-use Src\Sales\Shared\Domain\ValueObject\Money;
-use Src\Sales\Invoice\Domain\Exceptions\ValueException;
 use Illuminate\Support\Str;
+use Src\Sales\Invoice\Domain\Exceptions\ValueException;
+use Src\Sales\Shared\Domain\ValueObject\Money;
 
 class InvoiceItem
 {

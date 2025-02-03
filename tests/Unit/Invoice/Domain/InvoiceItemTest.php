@@ -2,13 +2,11 @@
 
 namespace Tests\Unit\Order\Domain;
 
-use DateTimeImmutable;
 use Faker\Factory;
 use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Src\Sales\Invoice\Domain\Entities\InvoiceItem;
-use Src\Sales\Order\Domain\Exceptions\ValueException;
 use Src\Sales\Shared\Domain\ValueObject\Currency;
 use Src\Sales\Shared\Domain\ValueObject\Money;
 
