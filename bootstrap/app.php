@@ -36,6 +36,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->append(DBTransactionMiddleware::class);
         $middleware->append(ValidateTokenMiddleware::class);
+        $middleware->validateCsrfTokens(except: [
+            'pact-state',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

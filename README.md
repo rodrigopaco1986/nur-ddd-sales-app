@@ -80,7 +80,7 @@ Examples are when running project in localhost (php artisan serve). Update the h
     "data": {
         "order": {
             "id": "9db22e48-8dc5-4b95-8b22-2e87fb606c20",
-            "customer_id": "14931dd7-68b6-4397-a128-872c0bc71f27",
+            "patient_id": "14931dd7-68b6-4397-a128-872c0bc71f27",
             "order_date": "2024-12-11T03:01:02.000000Z",
             "status": "COMPLETED",
             "total": 723,
