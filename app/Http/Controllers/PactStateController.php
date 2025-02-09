@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
 use Illuminate\Http\Request; // Make sure you have an Order model
-use Illuminate\Support\Facades\Log;
 use Src\Sales\Order\Application\Commands\CreateOrderCommand;
 use Src\Sales\Order\Application\Commands\Handlers\CreateOrderHandler;
 use Src\Sales\Order\Application\Services\ServiceService;
+use Src\Sales\Order\Infraestructure\Models\Order;
 use Src\Sales\Order\Infraestructure\Repositories\OrderRepository;
-use Src\Sales\Order\Presentation\Resources\OrderResource;
 use Src\Sales\Service\Infraestructure\Repositories\ServiceRepository;
 
 class PactStateController extends Controller
@@ -24,8 +22,6 @@ class PactStateController extends Controller
 
         switch ($state) {
             case 'An order exists':
-                Log::info('State change request received', ['state' => $state, 'params' => $params]);
-                // Retrieve the provided orderId
                 $orderId = $params['order_id'] ?? null;
                 $patientId = $params['patient_id'] ?? null;
                 $generateInvoice = 1;
@@ -56,11 +52,14 @@ class PactStateController extends Controller
                 $commandOrderHandlerResponse = (new CreateOrderHandler(new OrderRepository, new ServiceService(new ServiceRepository)))
                     ->handle($commandOrder);
 
-                Log::info('State change request received', ['reponse' => new OrderResource($commandOrderHandlerResponse)]);
+                //HACK: Update created order id to match the passed one
+                $orderIdCreated = $commandOrderHandlerResponse->getId();
+
+                $orderCreated = Order::findOrFail($orderIdCreated);
+                $orderCreated->update(['id' => $orderId]);
 
                 return response()->json(['result' => "Order with id $orderId created"], 200);
 
-                // You can add more cases for other states if needed.
             default:
                 return response()->json(['result' => "No state setup needed for state: $state"], 200);
         }

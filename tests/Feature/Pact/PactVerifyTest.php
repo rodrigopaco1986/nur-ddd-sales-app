@@ -2,7 +2,9 @@
 
 namespace App\Tests\Feature\Pact;
 
+use Dotenv\Dotenv;
 use GuzzleHttp\Psr7\Uri;
+use PhpPact\Standalone\ProviderVerifier\Model\Config\CustomHeaders;
 use PhpPact\Standalone\ProviderVerifier\Model\Source\Url;
 use PhpPact\Standalone\ProviderVerifier\Model\VerifierConfig;
 use PhpPact\Standalone\ProviderVerifier\Verifier;
@@ -13,6 +15,8 @@ class PactVerifyTest extends TestCase
     const PACT_PATH = __DIR__.'/../../../storage/app/pacts/';
 
     const CONTRACT_URL = 'https://raw.githubusercontent.com/rodrigopaco1986/nur-ddd-sales-front/refs/heads/main/storage/app/pacts/OrderServiceClient-OrderManagementAPI.json';
+
+    const ENV_PATH = __DIR__.'/../../../';
 
     protected function setUp(): void
     {
@@ -33,6 +37,8 @@ class PactVerifyTest extends TestCase
      */
     public function test_pact_verify_consumer()
     {
+        $apiToken = $this->getApiToken();
+
         $config = new VerifierConfig;
         $config->getProviderInfo()
             ->setName('OrderManagementAPI') // Providers name to fetch.
@@ -41,6 +47,10 @@ class PactVerifyTest extends TestCase
 
         $config->getProviderState()
             ->setStateChangeUrl(new Uri('http://127.0.0.1:8000/pact-state'));
+        $config->setCustomHeaders(
+            (new CustomHeaders)
+                ->addHeader('Authorization', 'Bearer '.$apiToken)
+        );
 
         if ($level = \getenv('PACT_LOGLEVEL')) {
             $config->setLogLevel($level);
@@ -49,11 +59,19 @@ class PactVerifyTest extends TestCase
         $verifier = new Verifier($config);
         $urlContract = new Url;
         $urlContract->setUrl(new Uri(self::CONTRACT_URL));
-        $verifier->addUrl($urlContract);
-        //$verifier->addFile(self::PACT_PATH . 'OrderServiceClient-OrderManagementAPI.json');
+        $verifier->addFile(self::PACT_PATH.'OrderServiceClient-OrderManagementAPI.json');
+        //$verifier->addUrl($urlContract);
 
         $verifyResult = $verifier->verify();
 
         $this->assertTrue($verifyResult);
+    }
+
+    protected function getApiToken(): ?string
+    {
+        $dotenv = Dotenv::createImmutable(self::ENV_PATH);
+        $dotenv->safeLoad();
+
+        return getenv('API_TOKEN') ?: $_ENV['API_TOKEN'] ?? null;
     }
 }
