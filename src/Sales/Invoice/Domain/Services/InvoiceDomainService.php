@@ -72,7 +72,8 @@ class InvoiceDomainService
             }
 
             $invoiceItem = new InvoiceItem(
-                $serviceItem->getId(),
+                //$serviceItem->getId(),
+                $item->getServiceId(),
                 $serviceItem->getCode(),
                 $serviceItem->getName(),
                 $serviceItem->getUnit(),

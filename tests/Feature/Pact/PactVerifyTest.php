@@ -53,14 +53,16 @@ class PactVerifyTest extends TestCase
         );
 
         if ($level = \getenv('PACT_LOGLEVEL')) {
-            $config->setLogLevel($level);
+            $config->setLogLevel('INFO');
         }
 
         $verifier = new Verifier($config);
         $urlContract = new Url;
         $urlContract->setUrl(new Uri(self::CONTRACT_URL));
-        $verifier->addFile(self::PACT_PATH.'OrderServiceClient-OrderManagementAPI.json');
-        //$verifier->addUrl($urlContract);
+        $verifier->addUrl($urlContract);
+        //To test with the pact contract file locally
+        //$verifier->addFile(self::PACT_PATH.'OrderServiceClient-OrderManagementAPI.json');
+        
 
         $verifyResult = $verifier->verify();
 

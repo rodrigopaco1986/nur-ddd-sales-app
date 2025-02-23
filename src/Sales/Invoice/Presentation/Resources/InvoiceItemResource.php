@@ -24,6 +24,7 @@ class InvoiceItemResource extends JsonResource
 
         return [
             'id' => $invoiceItem->getId(),
+            'service_id' => $invoiceItem->getServiceId(),
             'service_code' => $invoiceItem->getServiceCode(),
             'service_name' => $invoiceItem->getServiceName(),
             'service_unit' => $invoiceItem->getServiceUnit(),
