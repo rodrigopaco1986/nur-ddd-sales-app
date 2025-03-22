@@ -15,6 +15,9 @@ RUN apt-get update && apt-get install -y \
     zip \
     && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd intl
 
+# Install Composer
+COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
+
 # Copy startup script
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
