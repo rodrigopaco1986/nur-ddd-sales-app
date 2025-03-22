@@ -22,10 +22,21 @@ class PatientRepository implements PatientRepositoryInterface
 
         try {
 
-            $response = HttpClient::client()
+            /*$response = HttpClient::client()
                 ->get($url)
                 ->getBody()
-                ->getContents();
+                ->getContents();*/
+
+            $faker = \Faker\Factory::create();
+            $response = json_encode([
+                'id' => $id,
+                'code' => $faker->randomNumber(5),
+                'name' => $faker->name(),
+                'nit' => $faker->randomNumber(7),
+                'address' => $faker->address(),
+                'phone' => $faker->phoneNumber(),
+                'email' => $faker->email(),
+            ]);
 
             return PatientMapper::toEntity(json_decode($response));
 

@@ -22,10 +22,19 @@ class ServiceRepository implements ServiceRepositoryInterface
 
         try {
 
-            $response = HttpClient::client()
+            /*$response = HttpClient::client()
                 ->get($url)
                 ->getBody()
                 ->getContents();
+            */
+            $faker = \Faker\Factory::create();
+            $response = json_encode([
+                'id' => $id,
+                'code' => $faker->randomNumber(5),
+                'name' => $faker->sentence(4),
+                'unit' => $faker->word(),
+                'description' => $faker->sentence(10),
+            ]);
 
             return ServiceMapper::toEntity(json_decode($response));
 
