@@ -1,6 +1,5 @@
 {
     "*.php": [
-        "vendor/bin/pint",
-        "git add"
+        "vendor/bin/pint"
     ]
 }
