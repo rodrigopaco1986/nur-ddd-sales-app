@@ -15,7 +15,7 @@ services:
     depends_on:
       - db
     env_file:
-      - .env
+      - .env.docker
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
@@ -26,6 +26,8 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
+    extra_hosts:
+      - "myinvoice.local:172.18.0.2"
     healthcheck:
       test: ["CMD", "php", "-r", "echo @fsockopen('localhost', 9000) ? 'Healthy' : 'Unhealthy';"]
       interval: 30s
