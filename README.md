@@ -1,5 +1,7 @@
 # Sales Micro service
 
+[![Run Tests](https://github.com/rodrigopaco1986/nur-ddd-sales-app/actions/workflows/run-tests.yml/badge.svg?branch=develop)](https://github.com/rodrigopaco1986/nur-ddd-sales-app/actions/workflows/run-tests.yml)
+
 This is an, in progress, micro service to manage sales for "Nur-tricenter", which will manage: sales (orders), invoices and payments. The current development can register/view only sales (orders) and invoices. 
 
 ## Class Diagram
