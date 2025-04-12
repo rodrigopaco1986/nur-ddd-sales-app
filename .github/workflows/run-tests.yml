@@ -30,9 +30,6 @@ jobs:
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
-        with:
-          organization: rodrigopaco1986 # find this in SonarCloud > Organization Settings
-          projectKey: rodrigopaco1986_nur-ddd-sales-app # find this in SonarCloud > Project Settings
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   invoice-tests:
