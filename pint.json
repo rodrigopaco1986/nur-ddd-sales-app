@@ -1,15 +1,11 @@
 {
     "preset": "laravel",
     "rules": {
-        "indentation_type": {
-            "indentation": "\t"
-        },
-        "blank_line_before_statement": {},
+        "indentation_type": true,
         "concat_space": {
             "spacing": "one"
         },
         "method_argument_space": {
-            "ensure_fully_multiline": true,
             "keep_multiple_spaces_after_comma": false
         },
         "single_trait_insert_per_statement": true,
