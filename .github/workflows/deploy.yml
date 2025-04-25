@@ -37,7 +37,7 @@ jobs:
               -p $SSH_PORT \
               $SSH_USER@$SSH_HOST '
             set -e
-            cd /var/www/html/nur-ddd-sales-app
+            cd /var/www/nur-ddd-sales-app
             git fetch --all
             git reset --hard origin/main
             composer install --no-dev --optimize-autoloader
