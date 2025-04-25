@@ -34,28 +34,16 @@ jobs:
           SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
           ssh -o StrictHostKeyChecking=yes \
-              -p ${SSH_PORT:-22} \
-              $SSH_USER@$SSH_HOST << 'EOF'
-            
+              -p $SSH_PORT \
+              $SSH_USER@$SSH_HOST '
             set -e
-
-            # go to your Laravel public folder
-            cd /var/www/nur-ddd-sales-app
-
-            # pull the latest
+            cd /var/www/html/nur-ddd-sales-app
             git fetch --all
             git reset --hard origin/main
-
-            # install & optimize
             composer install --no-dev --optimize-autoloader
-
-            # run migrations
             php artisan migrate
-
-            # cache config/routes/views
             php artisan route:clear
             php artisan config:clear
             php artisan cache:clear
-
             echo "✔ Deployment successful!"
-            EOF
+          '
