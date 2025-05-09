@@ -1,4 +1,4 @@
-name: Block PRs into main from any branch except develop
+name: Restrict PRs into main (only from develop or hotfix/*)
 
 on:
   pull_request:
@@ -6,13 +6,22 @@ on:
       - main
 
 jobs:
-  restrict-source-branch:
+  validate-source:
     runs-on: ubuntu-latest
     steps:
-      - name: Check PR source branch
+      - name: Check source branch
         run: |
           echo "Source branch: ${{ github.head_ref }}"
-          if [ "${{ github.head_ref }}" != "develop" ]; then
-            echo "❌ Pull requests into 'main' must come from 'develop' only."
-            exit 1
+
+          if [[ "${{ github.head_ref }}" == "develop" ]]; then
+            echo "✅ Allowed: PR from develop"
+            exit 0
           fi
+
+          if [[ "${{ github.head_ref }}" == hotfix/* ]]; then
+            echo "✅ Allowed: PR from hotfix"
+            exit 0
+          fi
+
+          echo "❌ Blocked: Only 'develop' or 'hotfix/*' branches may merge into 'main'."
+          exit 1
