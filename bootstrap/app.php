@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Route;
+use Sentry\Laravel\Integration;
 
 /*const LISTENERS = [
     __DIR__.'/../src/Sales/Order/Domain/Listeners',
@@ -14,14 +15,14 @@ use Illuminate\Support\Facades\Route;
 ];*/
 
 return Application::configure(basePath: dirname(__DIR__))
-    //->withEvents(discover: LISTENERS)
+    // ->withEvents(discover: LISTENERS)
     ->withProviders([
         \Src\Sales\Order\Application\Providers\OrderProvider::class,
         \Src\Sales\Invoice\Application\Providers\InvoiceProvider::class,
     ])
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
+        web: __DIR__ . '/../routes/web.php',
+        commands: __DIR__ . '/../routes/console.php',
         health: '/up',
         then: function () {
             $routes = config('routes.web_routes');
@@ -41,6 +42,6 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        Integration::handles($exceptions);
     })
     ->create();

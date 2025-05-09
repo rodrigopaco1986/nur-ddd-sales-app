@@ -13,7 +13,8 @@
         "fakerphp/faker": "^1.24",
         "guzzlehttp/guzzle": "^7.0",
         "laravel/framework": "^11.31",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "sentry/sentry-laravel": "^4.13"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",

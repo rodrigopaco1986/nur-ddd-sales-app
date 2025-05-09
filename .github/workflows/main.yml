@@ -1,4 +1,4 @@
-name: Deploy Laravel Invoice App on Push
+name: PR CI – Main
 
 on:
   push:
