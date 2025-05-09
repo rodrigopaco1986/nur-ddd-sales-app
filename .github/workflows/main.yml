@@ -41,7 +41,7 @@ jobs:
             git fetch --all
             git reset --hard origin/main
             composer install --no-dev --optimize-autoloader
-            php artisan migrate
+            php artisan migrate --force
             php artisan route:clear
             php artisan config:clear
             php artisan cache:clear
