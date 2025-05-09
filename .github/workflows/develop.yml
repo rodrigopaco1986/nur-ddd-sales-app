@@ -1,10 +1,11 @@
-name: Run Invoice App Tests
+name: PR CI – Develop
 
 on:
-  push:
-    branches: [main, develop]
   pull_request:
-    branches: [main, develop]
+    branches:
+      - develop
+    types:
+      - review_requested
 
 jobs:
   sonarcloud:
