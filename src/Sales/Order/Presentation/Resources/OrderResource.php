@@ -33,6 +33,7 @@ class OrderResource extends JsonResource
                 'items' => new OrderItemCollection($order->getItems()),
                 'demo' => 'demo',
                 'demo2' => 'demo2',
+                'demo3' => 'demo3',
             ],
         ];
     }
