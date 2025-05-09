@@ -6,6 +6,7 @@ on:
       - develop
     types:
       - review_requested
+      - closed
 
 jobs:
   sonarcloud:
