@@ -1,4 +1,4 @@
-name: Validate main branch PR (only allow hotfix/* || develop)
+name: Verify main branch PR ( develop or hotfix/*)
 
 on:
   pull_request:
