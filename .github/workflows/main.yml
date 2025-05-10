@@ -7,7 +7,6 @@ on:
 jobs:
   deploy:
     name: SSH Deploy to Droplet
-    if: github.event_name == 'push' && (startsWith(github.ref_name, 'hotfix/') || github.ref_name == 'develop')
     runs-on: ubuntu-latest
 
     steps:
