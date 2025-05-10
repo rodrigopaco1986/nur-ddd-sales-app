@@ -32,6 +32,7 @@ class OrderResource extends JsonResource
                 'total' => $order->getTotal(),
                 'items' => new OrderItemCollection($order->getItems()),
                 'test' => 'test',
+                'test2' => 'test2',
             ],
         ];
     }
