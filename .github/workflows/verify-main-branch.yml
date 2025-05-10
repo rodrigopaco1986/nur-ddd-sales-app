@@ -15,7 +15,6 @@ jobs:
         run: |
           if [[ "${{ github.head_ref }}" == "develop" ]] || [[ "${{ github.head_ref }}" == hotfix/* ]]; then
             echo "valid=true" >> $GITHUB_OUTPUT
-            exit 0
           else
             echo "valid=false" >> $GITHUB_OUTPUT
             exit 1
