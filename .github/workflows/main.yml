@@ -1,13 +1,13 @@
-name: PR CI – Main
+name: CD - Deploy to Production from Main
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   deploy:
     name: SSH Deploy to Droplet
+    if: startsWith(github.head_ref, 'hotfix/') || github.head_ref == 'develop'
     runs-on: ubuntu-latest
 
     steps:

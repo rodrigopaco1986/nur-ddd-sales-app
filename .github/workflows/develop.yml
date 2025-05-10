@@ -1,4 +1,4 @@
-name: PR CI – Develop
+name: CI - Run Tests/SonaCloud from develop
 
 on:
   pull_request:
