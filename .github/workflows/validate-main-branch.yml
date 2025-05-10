@@ -1,4 +1,4 @@
-name: Validate PRs into main (only from develop or hotfix/*)
+name: Validate PR into main (only allow from develop or hotfix/*)
 
 on:
   pull_request:
