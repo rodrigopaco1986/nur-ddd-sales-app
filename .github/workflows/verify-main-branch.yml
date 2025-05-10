@@ -1,11 +1,11 @@
-name: Validate main branch PR (only allow from develop or hotfix/*)
+name: Validate main branch PR (only allow hotfix/* || develop)
 
 on:
   pull_request:
     branches: [main]
 
 jobs:
-  validate:
+  verify:
     runs-on: ubuntu-latest
     outputs:
       valid: ${{ steps.branch-check.outputs.valid }}
