@@ -1,20 +1,25 @@
-name: Verify main branch PR ( develop or hotfix/*)
+name: Validate PR Source to Main
 
 on:
   pull_request:
-    branches: [main]
+    branches:
+      - main  # ✅ Only trigger for PRs targeting main
 
 jobs:
-  verify:
+  validate-pr-source:
+    name: Validate Source Branch  # ✅ This name will appear in "Required status checks"
     runs-on: ubuntu-latest
-    outputs:
-      valid: ${{ steps.branch-check.outputs.valid }}
 
     steps:
-      - id: branch-check
+      - name: Validate PR source is develop or hotfix/*
         run: |
-          if [[ "${{ github.head_ref }}" == "develop" ]] || [[ "${{ github.head_ref }}" == hotfix/* ]]; then
-            echo "valid=true" >> $GITHUB_OUTPUT
-          else
-            echo "valid=false" >> $GITHUB_OUTPUT
+          BRANCH="${{ github.head_ref }}"
+
+          if [[ "$BRANCH" == "develop" || "$BRANCH" == hotfix/* ]]; then
+            echo "✅ Valid source branch: $BRANCH"
+            exit 0
           fi
+
+          echo "❌ Invalid source branch: $BRANCH"
+          echo "Only 'develop' or 'hotfix/*' branches may target 'main'"
+          exit 1
