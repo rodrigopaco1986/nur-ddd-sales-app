@@ -31,7 +31,7 @@ class OrderResource extends JsonResource
                 'currency' => $order->getCurrency(),
                 'total' => $order->getTotal(),
                 'items' => new OrderItemCollection($order->getItems()),
-                'demo2' => 'demo2',
+                'demo' => 'demo',
             ],
         ];
     }
