@@ -1,0 +1,22 @@
+name: Validate PRs into main (only from develop or hotfix/*)
+
+on:
+  pull_request:
+    branches:
+      - main  # ✅ Only triggers when PR targets `main` branch
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate source branch
+        run: |
+          BRANCH="${{ github.head_ref }}"
+
+          if [[ "$BRANCH" == "develop" || "$BRANCH" == hotfix/* ]]; then
+            echo "✅ Allowed: PR from '$BRANCH' into main"
+            exit 0
+          else
+            echo "❌ Blocked: PRs into main must come from 'develop' or 'hotfix/*' (got: $BRANCH)"
+            exit 1
+          fi
