@@ -1,6 +1,5 @@
 {
     "*.php": [
-        "vendor/bin/pint",
-        "vendor/bin/phpunit --testsuite=Unit --stop-on-failure"
+        "vendor/bin/pint"
     ]
 }
