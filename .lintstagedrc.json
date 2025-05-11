@@ -1,6 +1,5 @@
 {
     "*.php": [
-        "vendor/bin/pint",
-        "php artisan test --testsuite=Unit --stop-on-failure"
+        "vendor/bin/pint"
     ]
 }
