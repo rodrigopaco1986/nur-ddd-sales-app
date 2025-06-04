@@ -1,6 +1,9 @@
 version: '3.8'
 
 services:
+  # ──────────────────────────────────────────────────
+  # 1) Laravel app (sales”)
+  # ──────────────────────────────────────────────────
   app:
     build:
       context: .
@@ -15,7 +18,7 @@ services:
     depends_on:
       - db
     env_file:
-      - .env.docker
+      - .env
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
@@ -26,6 +29,7 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
+      - QUEUE_CONNECTION=database
     extra_hosts:
       - "myinvoice.local:172.18.0.2"
     healthcheck:
@@ -34,7 +38,10 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
-
+  
+  # ──────────────────────────────────────────────────
+  # 2) Nginx (web server)
+  # ──────────────────────────────────────────────────
   webserver:
     image: nginx:latest
     container_name: nginx_server
@@ -57,6 +64,9 @@ services:
       retries: 3
       start_period: 10s
 
+  # ──────────────────────────────────────────────────
+  # 3) Mysql (database server)
+  # ──────────────────────────────────────────────────
   db:
     image: mysql:8.0
     container_name: mysql_db
@@ -77,6 +87,46 @@ services:
     command: ["--default-authentication-plugin=mysql_native_password"]
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  
+  # ─────────────────────────────────────────────────────────────────
+  # 4) Queue‐worker
+  # ─────────────────────────────────────────────────────────────────app:
+  queue_worker:  
+    image: laravelsail/php82-composer
+    container_name: laravel_queue_worker
+    working_dir: /var/www/html
+    restart: unless-stopped
+    command: php artisan queue:work --queue=default --tries=3 --timeout=60
+    volumes:
+      - .:/var/www/html
+    networks:
+      - laravel_network
+    depends_on:
+      app: # Worker needs the app code
+        condition: service_started
+      db:  # Worker connects to the database for jobs
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_KEY=${APP_KEY}
+      - DB_CONNECTION=${DB_CONNECTION}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - QUEUE_CONNECTION=database
+    extra_hosts:
+      - "myinvoice.local:172.18.0.2"
+    healthcheck:
+      test: ["CMD", "php", "-r", "echo @fsockopen('localhost', 9000) ? 'Healthy' : 'Unhealthy';"]
       interval: 30s
       timeout: 10s
       retries: 3
