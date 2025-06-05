@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\DBTransactionMiddleware;
 use App\Http\Middleware\ValidateTokenMiddleware;
+use App\Http\Middleware\ValidateUrlTokenMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -36,7 +37,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->append(DBTransactionMiddleware::class);
-        $middleware->append(ValidateTokenMiddleware::class);
+        // $middleware->append(ValidateTokenMiddleware::class);
+        $middleware->append(ValidateUrlTokenMiddleware::class);
         $middleware->validateCsrfTokens(except: [
             'pact-state',
         ]);

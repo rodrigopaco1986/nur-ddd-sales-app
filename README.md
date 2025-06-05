@@ -369,7 +369,27 @@ php artisan test
 ./vendor/bin/pint
 ```
 
+## DOCKER SERVICES/PORTS
+
+- Network
+  - Internal: sales_network
+  - External: shared-services-network
+
+- Description
+|SERVICE NAME|SERVICE DESCRIPTION|INTERNAL PORT|EXTERNAL PORT|
+|---|---|---|---|
+|sales-app|Microservice Application (Laravel)|9000|-|
+|sales-webserver|Web Server (nginx)|443|8444|
+|sales-db|Database Server (Mysql)|3306|3308|
+|sales-queue_worker|Queue Worker (Laravel)|-|-|
+
+## LARAVEL TELESCOPE
+Tool to inspect the microservice: jobs, queues, mails, queries, etc.
+
+- [http://localhost:8000/telescope](http://localhost:8000/telescope)
+
 ## TODO
 - Register payment from patient (wip)
 - Add more tests (unit tests, integration tests and E2E tests)
 - Enable queues to send async invoice by email once is generated
+- Resctict access to laravel telescope
