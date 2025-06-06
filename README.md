@@ -375,11 +375,10 @@ php artisan test
   - Internal: sales_network
   - External: shared-services-network
 
-- Description
 |SERVICE NAME|SERVICE DESCRIPTION|INTERNAL PORT|EXTERNAL PORT|
 |---|---|---|---|
 |sales-app|Microservice Application (Laravel)|9000|-|
-|sales-webserver|Web Server (nginx)|443|8444|
+|sales-webserver|Web Server (nginx)|80 or 443|8001 or 8444|
 |sales-db|Database Server (Mysql)|3306|3308|
 |sales-queue_worker|Queue Worker (Laravel)|-|-|
 
