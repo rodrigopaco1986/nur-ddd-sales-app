@@ -10,10 +10,17 @@ RUN apt-get update && apt-get install -y \
     unzip \
     curl \
     libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
+    librdkafka-dev \
+    libffi-dev \
     zip \
-    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd intl
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd pdo pdo_mysql mbstring exif pcntl bcmath intl ffi \
+    && pecl install rdkafka \
+    && docker-php-ext-enable rdkafka
 
 # Install Composer
 COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer

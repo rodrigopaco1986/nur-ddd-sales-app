@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Junges\Kafka\Facades\Kafka;
 use Src\Sales\Order\Application\Events\OrderCreatedIntegrationEvent;
 use Src\Sales\Order\Application\Queries\GetOrderQuery;
 use Src\Sales\Order\Application\Queries\Handlers\GetOrderHandler;
@@ -21,7 +22,7 @@ class PublishOrderCreatedToBrokerJob implements ShouldQueue
 
     public function __construct() {}
 
-    public function handle(OrderCreatedIntegrationEvent $orderEvent/* Producer $kafkaProducer */)
+    public function handle(OrderCreatedIntegrationEvent $orderEvent)
     {
         $orderId = $orderEvent->order->getId();
 
@@ -33,6 +34,9 @@ class PublishOrderCreatedToBrokerJob implements ShouldQueue
 
         Log::info('Testint to kafka', ['data' => $orderResource->toJson()]);
 
-        // $kafkaProducer->produce('orders.created', json_encode($payload));
+        Kafka::publish(config('kafka.brokers'))
+            ->onTopic('order.created')
+            ->withBodyKey('order', $orderResource->toJson())
+            ->send();
     }
 }
