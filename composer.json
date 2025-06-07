@@ -15,6 +15,7 @@
         "laravel/framework": "^11.31",
         "laravel/telescope": "^5.9",
         "laravel/tinker": "^2.9",
+        "mateusjunges/laravel-kafka": "^2.5",
         "sentry/sentry-laravel": "^4.13"
     },
     "require-dev": {
