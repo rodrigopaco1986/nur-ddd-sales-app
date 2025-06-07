@@ -109,6 +109,7 @@ services:
       - .:/var/www/html
     networks:
       - sales_network
+      - shared_services_network
     depends_on:
       sales-app: # Worker needs the app code
         condition: service_started
