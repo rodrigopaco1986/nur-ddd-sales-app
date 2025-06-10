@@ -1,5 +1,9 @@
 #!/bin/bash
 
+set -e
+
+cd /var/www/html
+
 echo "Adding permissions..."
 
 mkdir -p /var/www/html/storage/framework/cache
@@ -19,7 +23,7 @@ do
 done
 echo "MySQL is up – continuing."
 
-/usr/bin/composer install --prefer-dist --ignore-platform-req=ext-ffi
+#/usr/bin/composer install --prefer-dist --ignore-platform-req=ext-ffi
 #cp /var/www/html/.env.docker /var/www/html/.env
 
 php artisan migrate
