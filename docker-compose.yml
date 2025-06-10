@@ -13,6 +13,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html
+      - /var/www/html/vendor
     networks:
       - sales_network
       - shared_services_network
@@ -107,6 +108,8 @@ services:
     command: php artisan queue:work --queue=default --tries=3 --timeout=60
     volumes:
       - .:/var/www/html
+      # This preserves the vendor directory that was installed inside the image during the build.
+      - /var/www/html/vendor
     networks:
       - sales_network
       - shared_services_network
@@ -118,7 +121,7 @@ services:
     env_file:
       - .env
     environment:
-      - APP_ENV=local
+      - APP_ENV=production
       - APP_DEBUG=true
       - APP_KEY=${APP_KEY}
       - DB_CONNECTION=${DB_CONNECTION}
