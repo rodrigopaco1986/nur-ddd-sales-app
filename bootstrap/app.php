@@ -6,6 +6,7 @@ use App\Http\Middleware\ValidateUrlTokenMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Sentry\Laravel\Integration;
 
@@ -16,10 +17,10 @@ use Sentry\Laravel\Integration;
 ];*/
 
 return Application::configure(basePath: dirname(__DIR__))
-    // ->withEvents(discover: LISTENERS)
     ->withProviders([
         \Src\Sales\Order\Application\Providers\OrderProvider::class,
         \Src\Sales\Invoice\Application\Providers\InvoiceProvider::class,
+        \Src\Sales\Patient\Application\Providers\PatientProvider::class,
     ])
     ->withRouting(
         web: __DIR__ . '/../routes/web.php',
@@ -45,5 +46,13 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         Integration::handles($exceptions);
+        /*$exceptions->shouldRenderJsonWhen(function (Request $request, Throwable $e) {
+
+            if ($request->is(['order/*', 'invoice/*', 'payment/*'])) {
+                return true;
+            }
+
+            return null;
+        });*/
     })
     ->create();

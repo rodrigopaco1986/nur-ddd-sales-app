@@ -14,7 +14,7 @@ class ServiceService
         $this->serviceRepository = $serviceRepository;
     }
 
-    public function getServiceInfo(string $service): Service
+    public function getServiceInfo(string $service): ?Service
     {
         return $this->serviceRepository->findById($service);
     }
