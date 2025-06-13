@@ -14,7 +14,7 @@ class PatientService
         $this->patientRepository = $patientRepository;
     }
 
-    public function getPatientInfo(string $patientId): Patient
+    public function getPatientInfo(string $patientId): ?Patient
     {
         return $this->patientRepository->findById($patientId);
     }

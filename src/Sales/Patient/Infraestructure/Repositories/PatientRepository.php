@@ -2,46 +2,57 @@
 
 namespace Src\Sales\Patient\Infraestructure\Repositories;
 
-use Exception;
 use Src\Sales\Patient\Domain\Entities\Patient;
 use Src\Sales\Patient\Domain\Repositories\PatientRepositoryInterface;
 use Src\Sales\Patient\Infraestructure\Mappers\PatientMapper;
-use Src\Sales\Shared\Application\Services\HttpClient;
+use Src\Sales\Patient\Infraestructure\Models\Patient as EloquentPatient;
 
 class PatientRepository implements PatientRepositoryInterface
 {
-    //TODO: move to a settings the endoint
-    const URL = 'http://localhost:8000/fake/patient/%s';
-
-    public function findById(string $id): Patient
+    public function findById(string $id): ?Patient
     {
-        $url = sprintf(
-            self::URL,
-            $id
-        );
+        $eloquentPatient = EloquentPatient::find($id);
 
-        try {
-
-            /*$response = HttpClient::client()
-                ->get($url)
-                ->getBody()
-                ->getContents();*/
-
-            $faker = \Faker\Factory::create();
-            $response = json_encode([
-                'id' => $id,
-                'code' => $faker->randomNumber(5),
-                'name' => $faker->name(),
-                'nit' => $faker->randomNumber(7),
-                'address' => $faker->address(),
-                'phone' => $faker->phoneNumber(),
-                'email' => $faker->email(),
-            ]);
-
-            return PatientMapper::toEntity(json_decode($response));
-
-        } catch (Exception $e) {
-            throw new Exception('Error getting patient info for: '.$id);
+        if ($eloquentPatient) {
+            return PatientMapper::toEntity($eloquentPatient);
         }
+
+        return null;
+    }
+
+    public function findByCode(string $code): ?Patient
+    {
+        $eloquentPatient = EloquentPatient::where('code', $code)->first();
+
+        if ($eloquentPatient) {
+            return PatientMapper::toEntity($eloquentPatient);
+        }
+
+        return null;
+    }
+
+    public function save(Patient $patient): Patient
+    {
+        $eloquentPatientModel = PatientMapper::toModel($patient);
+        $eloquentPatientModel->save();
+
+        return PatientMapper::toEntity($eloquentPatientModel);
+    }
+
+    public function upsert(Patient $patient): Patient
+    {
+        $eloquentPatient = EloquentPatient::where('code', $patient->getCode())->first();
+        if ($eloquentPatient) {
+            $eloquentPatient->fill([
+                'code' => $patient->getCode(),
+                'nit' => $patient->getNit(),
+                'name' => $patient->getName(),
+                'address' => $patient->getAddress(),
+                'phone' => $patient->getPhone(),
+                'email' => $patient->getEmail(),
+            ])->save();
+        }
+
+        return $this->save($patient);
     }
 }
