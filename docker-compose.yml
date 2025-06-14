@@ -180,6 +180,48 @@ services:
       retries: 3
       start_period: 10s
 
+  # ─────────────────────────────────────────────────────────────────
+  # 6) Kafka Service Consumer
+  # ─────────────────────────────────────────────────────────────────app:
+  sales-kafka-service-consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sales_kafka_service_consumer
+    working_dir: /var/www/html
+    restart: unless-stopped
+    command: php artisan kafka:consume-service
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/vendor
+    networks:
+      - sales_network
+      - shared_services_network
+    depends_on:
+      sales-app: # Worker needs the app code
+        condition: service_started
+      sales-db:  # Worker connects to the database for jobs
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=true
+      - APP_KEY=${APP_KEY}
+      - DB_CONNECTION=${DB_CONNECTION}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - QUEUE_CONNECTION=database
+    healthcheck:
+      test: ["CMD", "php", "-r", "echo @fsockopen('localhost', 9000) ? 'Healthy' : 'Unhealthy';"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
 volumes:
   laravel_app:
   mysql_data:

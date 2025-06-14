@@ -2,45 +2,22 @@
 
 namespace Src\Sales\Service\Infraestructure\Repositories;
 
-use Exception;
 use Src\Sales\Service\Domain\Entities\Service;
 use Src\Sales\Service\Domain\Repositories\ServiceRepositoryInterface;
 use Src\Sales\Service\Infraestructure\Mappers\ServiceMapper;
-use Src\Sales\Shared\Application\Services\HttpClient;
+use Src\Sales\Service\Infraestructure\Models\Service as EloquentService;
 
 class ServiceRepository implements ServiceRepositoryInterface
 {
-    //TODO: move to a settings the endoint
-    const URL = 'http://localhost:8000/fake/service/%s';
-
-    public function findById(string $id): Service
+    public function findById(string $id): ?Service
     {
-        $url = sprintf(
-            self::URL,
-            $id
-        );
+        $eloquentService = EloquentService::find($id);
 
-        try {
-
-            /*$response = HttpClient::client()
-                ->get($url)
-                ->getBody()
-                ->getContents();
-            */
-            $faker = \Faker\Factory::create();
-            $response = json_encode([
-                'id' => $id,
-                'code' => $faker->randomNumber(5),
-                'name' => $faker->sentence(4),
-                'unit' => $faker->word(),
-                'description' => $faker->sentence(10),
-            ]);
-
-            return ServiceMapper::toEntity(json_decode($response));
-
-        } catch (Exception $e) {
-            throw new Exception('Error getting service info for: '.$id);
+        if ($eloquentService) {
+            return ServiceMapper::toEntity($eloquentService);
         }
+
+        return null;
     }
 
     public function findByIds(array $ids): array
@@ -52,5 +29,50 @@ class ServiceRepository implements ServiceRepositoryInterface
         }
 
         return $response;
+    }
+
+    public function findByCode(string $code): ?Service
+    {
+        $eloquentService = EloquentService::where('code', $code)->first();
+
+        if ($eloquentService) {
+            return ServiceMapper::toEntity($eloquentService);
+        }
+
+        return null;
+    }
+
+    public function findByCodes(array $codes): array
+    {
+        $response = [];
+
+        foreach ($codes as $code) {
+            $response[] = $this->findByCode($code);
+        }
+
+        return $response;
+    }
+
+    public function save(Service $service): Service
+    {
+        $eloquentServiceModel = ServiceMapper::toModel($service);
+        $eloquentServiceModel->save();
+
+        return ServiceMapper::toEntity($eloquentServiceModel);
+    }
+
+    public function upsert(Service $service): Service
+    {
+        $eloquentService = EloquentService::where('code', $service->getCode())->first();
+        if ($eloquentService) {
+            $eloquentService->fill([
+                'code' => $service->getCode(),
+                'name' => $service->getName(),
+                'unit' => $service->getUnit(),
+                'description' => $service->getDescription(),
+            ])->save();
+        }
+
+        return $this->save($service);
     }
 }

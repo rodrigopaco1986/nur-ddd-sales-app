@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         \Src\Sales\Order\Application\Providers\OrderProvider::class,
         \Src\Sales\Invoice\Application\Providers\InvoiceProvider::class,
         \Src\Sales\Patient\Application\Providers\PatientProvider::class,
+        \Src\Sales\Service\Application\Providers\ServiceProvider::class,
     ])
     ->withRouting(
         web: __DIR__ . '/../routes/web.php',

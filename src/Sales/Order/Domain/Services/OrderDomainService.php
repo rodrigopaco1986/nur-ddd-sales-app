@@ -28,7 +28,11 @@ class OrderDomainService
         foreach ($items as $item) {
 
             $serviceItem = collect($servicesInfo)->filter(function ($value) use ($item) {
-                return $item['service_id'] == $value->getId();
+                if ($value) {
+                    return $item['service_id'] == $value->getId();
+                }
+
+                return false;
             })->first();
 
             if (! $serviceItem) {
