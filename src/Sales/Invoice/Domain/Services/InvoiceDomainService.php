@@ -64,7 +64,11 @@ class InvoiceDomainService
 
         foreach ($orderInfo->getItems() as $item) {
             $serviceItem = collect($servicesInfo)->filter(function ($value) use ($item) {
-                return $item->getId() == $value->getId();
+                if ($value) {
+                    return $item->getServiceId() == $value->getId();
+                }
+
+                return false;
             })->first();
 
             if (! $serviceItem) {
@@ -72,7 +76,7 @@ class InvoiceDomainService
             }
 
             $invoiceItem = new InvoiceItem(
-                //$serviceItem->getId(),
+                // $serviceItem->getId(),
                 $item->getServiceId(),
                 $serviceItem->getCode(),
                 $serviceItem->getName(),
