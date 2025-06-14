@@ -43,7 +43,7 @@ final class CreateInvoiceHandler
 
         $items = $orderInfo?->getItems() ?? [];
         $serviceIds = collect($items)->map(function (OrderItem $value) {
-            return $value->getId();
+            return $value->getServiceId();
         })->toArray();
         $servicesInfo = $this->serviceService->getServicesInfo($serviceIds);
 
@@ -55,7 +55,7 @@ final class CreateInvoiceHandler
         );
 
         if ($invoiceEntitySaved) {
-            //OrderCreatedEvent::dispatch($orderEntitySaved, ['generateInvoice' => $command->getGenerateInvoice()]);
+            // OrderCreatedEvent::dispatch($orderEntitySaved, ['generateInvoice' => $command->getGenerateInvoice()]);
         }
 
         return $invoiceEntitySaved;
