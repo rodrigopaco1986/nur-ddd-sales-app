@@ -13,9 +13,9 @@ use Src\Sales\Shared\Domain\ValueObject\Money;
 class InvoiceItemTest extends TestCase
 {
     #[Test]
-    public function itShouldCreateAnInvoiceItem(): void
+    public function it_should_create_an_invoice_item(): void
     {
-        //Arrange
+        // Arrange
         $faker = Factory::create();
         $invoiceItem = new InvoiceItem(
             Str::uuid(),
@@ -27,10 +27,10 @@ class InvoiceItemTest extends TestCase
             new Money($faker->randomFloat(1, 0, 10), new Currency),
         );
 
-        //Act
+        // Act
         $isInstanceOfInvoiceItem = $invoiceItem instanceof InvoiceItem;
 
-        //Assert
+        // Assert
         $this->assertTrue($isInstanceOfInvoiceItem);
     }
 }

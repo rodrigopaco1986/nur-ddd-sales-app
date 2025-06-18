@@ -25,19 +25,19 @@ class InvoiceItem
         }
 
         if ($this->quantity < 0) {
-            throw new Exception('Invoice Item: Quantity cant be lower than zero for '.$this->serviceId);
+            throw new Exception('Invoice Item: Quantity cant be lower than zero for ' . $this->serviceId);
         }
 
         if ($this->price->amount() < 0) {
-            throw new Exception('Invoice Item: Price cant be lower than zero for '.$this->serviceId);
+            throw new Exception('Invoice Item: Price cant be lower than zero for ' . $this->serviceId);
         }
 
         if ($this->discount->amount() < 0) {
-            throw new Exception('Invoice Item: Discount cant be lower than zero for '.$this->serviceId);
+            throw new Exception('Invoice Item: Discount cant be lower than zero for ' . $this->serviceId);
         }
 
         if ($this->price->amount() * $this->quantity < $this->discount->amount()) {
-            throw new Exception('Invoice Item: Discount can\'t be lower than subtotal for '.$this->serviceId);
+            throw new Exception('Invoice Item: Discount can\'t be lower than subtotal for ' . $this->serviceId);
         }
     }
 

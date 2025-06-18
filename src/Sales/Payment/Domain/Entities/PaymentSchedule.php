@@ -3,6 +3,7 @@
 namespace Src\Sales\Payment\Domain\Entities;
 
 use DateTimeImmutable;
+use Src\Sales\Payment\Domain\Exceptions\ValueException;
 use Src\Sales\Payment\Domain\ValueObject\PaymentStatus;
 use Src\Sales\Shared\Domain\ValueObject\Money;
 
@@ -16,6 +17,7 @@ class PaymentSchedule
         private DateTimeImmutable $dueDate,
         private PaymentStatus $status,
         private string $orderId,
+        private ?PaymentRecord $paymentRecord = null,
     ) {}
 
     /**
@@ -82,5 +84,24 @@ class PaymentSchedule
     public function getCurrency(): string
     {
         return $this->amount->currency()->getIsoCode();
+    }
+
+    /**
+     * Get the value of payment record
+     */
+    public function getPaymentRecord(): ?PaymentRecord
+    {
+        return $this->paymentRecord;
+    }
+
+    public function markAsPaid(): void
+    {
+        if ($this->getStatus() == PaymentStatus::PENDING()->getStatus()) {
+            $this->status = PaymentStatus::PAID();
+
+            return;
+        }
+
+        throw new ValueException('Payment schedule is not in pending status!');
     }
 }

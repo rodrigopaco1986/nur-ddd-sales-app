@@ -29,7 +29,9 @@ class Money
 
     public static function fromMoney(Money $aMoney)
     {
-        return new self($aMoney->amount(), $aMoney->currency()
+        return new self(
+            $aMoney->amount(),
+            $aMoney->currency()
         );
     }
 
@@ -40,7 +42,9 @@ class Money
 
     public function increaseAmountBy(int $anAmount)
     {
-        return new self($this->amount() + $anAmount, $this->currency()
+        return new self(
+            $this->amount() + $anAmount,
+            $this->currency()
         );
     }
 

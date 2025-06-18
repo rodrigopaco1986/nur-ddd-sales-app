@@ -11,7 +11,7 @@ class PaymentScheduleRepository implements PaymentScheduleRepositoryInterface
 {
     public function findById(string $id): ?PaymentSchedule
     {
-        $eloquentPaymentSchedule = EloquentPaymentSchedule::find($id);
+        $eloquentPaymentSchedule = EloquentPaymentSchedule::with('record')->find($id);
 
         if ($eloquentPaymentSchedule) {
             return PaymentScheduleMapper::toEntity($eloquentPaymentSchedule);
@@ -22,7 +22,9 @@ class PaymentScheduleRepository implements PaymentScheduleRepositoryInterface
 
     public function findByOrderId(string $orderId): ?array
     {
-        $eloquentPaymentSchedule = EloquentPaymentSchedule::where('order_id', $orderId)->get();
+        $eloquentPaymentSchedule = EloquentPaymentSchedule::where('order_id', $orderId)
+            ->with('record')
+            ->get();
 
         if ($eloquentPaymentSchedule) {
             $response = [];
@@ -55,5 +57,18 @@ class PaymentScheduleRepository implements PaymentScheduleRepositoryInterface
         }
 
         return $response;
+    }
+
+    public function update(PaymentSchedule $paymentSchedule): ?PaymentSchedule
+    {
+        $eloquentPaymentSchedule = EloquentPaymentSchedule::find($paymentSchedule->getId());
+
+        if ($eloquentPaymentSchedule) {
+            $eloquentPaymentSchedule = PaymentScheduleMapper::fillModel($eloquentPaymentSchedule, $paymentSchedule);
+            $eloquentPaymentSchedule->save();
+            PaymentScheduleMapper::toEntity($eloquentPaymentSchedule);
+        }
+
+        return null;
     }
 }

@@ -3,54 +3,51 @@
 namespace Src\Sales\Payment\Domain\Services;
 
 use App\Exceptions\DomainException;
-use DateTimeImmutable;
 use Exception;
 use Src\Sales\Payment\Domain\Entities\PaymentRecord;
-use Src\Sales\Payment\Domain\Entities\PaymentSchedule;
+use Src\Sales\Payment\Domain\Exceptions\PaymentRecordAlreadyCreatedException;
 use Src\Sales\Payment\Domain\Exceptions\PaymentScheduleNotFoundException;
 use Src\Sales\Payment\Domain\Repositories\PaymentRecordRepositoryInterface;
-use Src\Sales\Shared\Domain\ValueObject\Currency;
-use Src\Sales\Shared\Domain\ValueObject\Money;
+use Src\Sales\Payment\Domain\Repositories\PaymentScheduleRepositoryInterface;
 
 class PaymentRecordDomainService
 {
     private PaymentRecordRepositoryInterface $paymentRecordRepository;
 
+    private PaymentScheduleRepositoryInterface $paymentScheduleRepository;
+
     public function __construct(
         PaymentRecordRepositoryInterface $paymentRecordRepository,
+        PaymentScheduleRepositoryInterface $paymentScheduleRepository,
     ) {
         $this->paymentRecordRepository = $paymentRecordRepository;
+        $this->paymentScheduleRepository = $paymentScheduleRepository;
     }
 
-    public function create(PaymentSchedule $paymentScheduleInfo, Currency $currency, array $data, string $paymentScheduleId): ?array
+    public function create(string $paymentScheduleId): ?PaymentRecord
     {
-        //TODO: finish this method
-        return [];
-        /*if (! $paymentScheduleInfo->getId()) {
+        $paymentSchedule = $this->paymentScheduleRepository->findById($paymentScheduleId);
+        $paymentRecord = $this->paymentRecordRepository->findByPaymentSchedule($paymentScheduleId);
+
+        if (! $paymentSchedule) {
             throw new PaymentScheduleNotFoundException($paymentScheduleId);
         }
 
-        $paymentRecord = new PaymentRecord(
-            new Money($paymentSchedule->getAmount(), new Currency($paymentSchedule->getCurrency())),
-            new DateTimeImmutable,
-            'rodrigo',
-            'paco',
-            '5852695',
-            $paymentSchedule->getOrderId(),
-            $paymentSchedule->getId(),
-        );
+        if ($paymentRecord) {
+            throw new PaymentRecordAlreadyCreatedException($paymentRecord->getPaymentScheduleId());
+        }
 
-        $eloquentPaymentRecordModel = PaymentRecordMapper::toModel($paymentRecord);
-        $eloquentPaymentRecordModel->save();
+        $paymentSchedule->markAsPaid();
 
         try {
 
-            $paymentsEntitiesSaved = $this->paymentRecordRepository->save($paymentRecord);
+            $this->paymentScheduleRepository->update($paymentSchedule);
+            $paymentRecordEntity = $this->paymentRecordRepository->save($paymentSchedule);
 
-            return $paymentsEntitiesSaved;
+            return $paymentRecordEntity;
 
         } catch (Exception $e) {
             throw new DomainException('Error saving payment record');
-        }*/
+        }
     }
 }

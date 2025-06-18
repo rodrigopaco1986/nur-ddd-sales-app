@@ -12,7 +12,7 @@ class OrderCreationTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function itCannotCreateAnOrderInvalidEmptyPost(): void
+    public function it_cannot_create_an_order_invalid_empty_post(): void
     {
         $token = config('app.api_token');
 
@@ -44,7 +44,7 @@ class OrderCreationTest extends TestCase
     }
 
     #[Test]
-    public function itCannotCreateAnOrderInvalidPatientId(): void
+    public function it_cannot_create_an_order_invalid_patient_id(): void
     {
         $token = config('app.api_token');
 
@@ -83,7 +83,7 @@ class OrderCreationTest extends TestCase
     }
 
     #[Test]
-    public function itCanCreateAnOrder(): void
+    public function it_can_create_an_order(): void
     {
         $token = config('app.api_token');
 
@@ -140,7 +140,7 @@ class OrderCreationTest extends TestCase
     }
 
     #[Test]
-    public function itCannotCreateAnOrderInvalidItem(): void
+    public function it_cannot_create_an_order_invalid_item(): void
     {
         $token = config('app.api_token');
 
@@ -173,7 +173,7 @@ class OrderCreationTest extends TestCase
     }
 
     #[Test]
-    public function itCanQueryAnOrder(): void
+    public function it_can_query_an_order(): void
     {
         $token = config('app.api_token');
 
@@ -198,7 +198,7 @@ class OrderCreationTest extends TestCase
         $order = $response->json();
         $orderId = $order['data']['order']['id'];
 
-        $response = $this->getJson('/order/view/'.$orderId, [
+        $response = $this->getJson('/order/view/' . $orderId, [
             'Authorization' => "Bearer $token",
         ]);
 
@@ -231,13 +231,13 @@ class OrderCreationTest extends TestCase
     }
 
     #[Test]
-    public function itCannotQueryAnOrderThatDoesNotExists(): void
+    public function it_cannot_query_an_order_that_does_not_exists(): void
     {
         $token = config('app.api_token');
 
         $orderId = 'xxxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 
-        $response = $this->getJson('/order/view/'.$orderId, [
+        $response = $this->getJson('/order/view/' . $orderId, [
             'Authorization' => "Bearer $token",
         ]);
 

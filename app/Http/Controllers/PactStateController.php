@@ -66,7 +66,7 @@ class PactStateController extends Controller
         ];
 
         if ($orderId) {
-            //Delete the order if it was created before as a test
+            // Delete the order if it was created before as a test
             Order::destroy($orderId);
         } else {
             return false;
@@ -76,7 +76,7 @@ class PactStateController extends Controller
         $commandOrderHandlerResponse = (new CreateOrderHandler(new OrderRepository, new ServiceService(new ServiceRepository)))
             ->handle($commandOrder);
 
-        //HACK for pact: Update created order id to match the passed one
+        // HACK for pact: Update created order id to match the passed one
         $orderIdCreated = $commandOrderHandlerResponse->getId();
         DB::table('orders')->where('id', $orderIdCreated)->update(['id' => $orderId]);
 
@@ -101,10 +101,10 @@ class PactStateController extends Controller
         $invoiceId = $params['invoice_id'] ?? false;
         $orderIdCreated = $this->_doCreateOrder($params);
 
-        //HACK for pact: Update created order id to match the passed one
+        // HACK for pact: Update created order id to match the passed one
         DB::table('orders')->where('id', $orderIdCreated)->update(['id' => $orderId]);
 
-        //Create the invoice
+        // Create the invoice
         $commandInvoice = new CreateInvoiceCommand($orderId, $patientId);
         $commandInvoiceHandlerResponse = (new CreateInvoiceHandler(
             new InvoiceRepository,
@@ -114,7 +114,7 @@ class PactStateController extends Controller
         ))
             ->handle($commandInvoice);
 
-        //HACK for pact: Update created invoice id to match the passed one
+        // HACK for pact: Update created invoice id to match the passed one
         $invoiceIdCreated = $commandInvoiceHandlerResponse->getId();
         DB::table('invoices')->where('id', $invoiceIdCreated)->update(['id' => $invoiceId]);
 

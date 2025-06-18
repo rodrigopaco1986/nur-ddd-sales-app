@@ -15,9 +15,9 @@ use Src\Sales\Shared\Domain\ValueObject\Currency;
 class OrderTest extends TestCase
 {
     #[Test]
-    public function itShouldCreateAnOrder(): void
+    public function it_should_create_an_order(): void
     {
-        //Arrange
+        // Arrange
         $order = new Order(
             Str::uuid(),
             new DateTimeImmutable,
@@ -25,15 +25,15 @@ class OrderTest extends TestCase
             new Currency,
         );
 
-        //Act
+        // Act
         $isInstanceOfOrder = $order instanceof Order;
 
-        //Assert
+        // Assert
         $this->assertTrue($isInstanceOfOrder);
     }
 
     #[Test]
-    public function itShouldThrowAnExceptionWhenPatiendIdIsNotValid(): void
+    public function it_should_throw_an_exception_when_patiend_id_is_not_valid(): void
     {
         $this->expectException(ValueException::class);
 
@@ -46,7 +46,7 @@ class OrderTest extends TestCase
     }
 
     #[Test]
-    public function itShouldThrowAnExceptionWhenOrderItemIsNotValid(): void
+    public function it_should_throw_an_exception_when_order_item_is_not_valid(): void
     {
         $this->expectException(InvalidOrderItemException::class);
 

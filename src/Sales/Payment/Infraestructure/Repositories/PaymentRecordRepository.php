@@ -24,6 +24,33 @@ class PaymentRecordRepository implements PaymentRecordRepositoryInterface
         return null;
     }
 
+    public function findByPaymentSchedule(string $id): ?PaymentRecord
+    {
+        $eloquentPaymentRecord = EloquentPaymentRecord::where('payments_schedule_id', $id)->first();
+
+        if ($eloquentPaymentRecord) {
+            return PaymentRecordMapper::toEntity($eloquentPaymentRecord);
+        }
+
+        return null;
+    }
+
+    public function findByOrderId(string $orderId): ?array
+    {
+        $eloquentPaymentRecord = EloquentPaymentRecord::where('order_id', $orderId)->get();
+
+        if ($eloquentPaymentRecord) {
+            $response = [];
+            foreach ($eloquentPaymentRecord as $paymentRecord) {
+                $response[] = PaymentRecordMapper::toEntity($paymentRecord);
+            }
+
+            return $response;
+        }
+
+        return null;
+    }
+
     public function save(PaymentSchedule $paymentSchedule): ?PaymentRecord
     {
         $paymentRecord = new PaymentRecord(

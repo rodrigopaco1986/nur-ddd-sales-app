@@ -11,7 +11,9 @@ use Src\Sales\Order\Domain\Entities\Order;
 
 class OrderCreatedEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     /**
      * Create a new event instance.
@@ -31,7 +33,7 @@ class OrderCreatedEvent
     public function broadcastOn(): array
     {
         return [
-            //new PrivateChannel('channel-name'),
+            // new PrivateChannel('channel-name'),
         ];
     }
 }
