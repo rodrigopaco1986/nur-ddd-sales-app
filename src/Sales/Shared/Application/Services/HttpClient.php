@@ -16,7 +16,7 @@ class HttpClient
                 CURLOPT_SSL_VERIFYPEER => false,
             ],
             'headers' => [
-                'Authorization' => 'Bearer '.$token,
+                'Authorization' => 'Bearer ' . $token,
                 'Accept' => 'application/json',
             ],
             'verify' => false,

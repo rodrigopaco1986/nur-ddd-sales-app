@@ -12,24 +12,24 @@ use PHPUnit\Framework\TestCase;
 
 class PactVerifyTest extends TestCase
 {
-    const PACT_PATH = __DIR__.'/../../../storage/app/pacts/';
+    const PACT_PATH = __DIR__ . '/../../../storage/app/pacts/';
 
     const CONTRACT_URL = 'https://raw.githubusercontent.com/rodrigopaco1986/nur-ddd-sales-front/refs/heads/main/storage/app/pacts/OrderServiceClient-OrderManagementAPI.json';
 
-    const ENV_PATH = __DIR__.'/../../../';
+    const ENV_PATH = __DIR__ . '/../../../';
 
     protected function setUp(): void
     {
-        //exec("kill -9 $(lsof -t -i:8000) 2>/dev/null");
+        // exec("kill -9 $(lsof -t -i:8000) 2>/dev/null");
 
-        //exec('nohup php artisan serve --host=127.0.0.1 --port=8000 > /dev/null 2>&1 &');
+        // exec('nohup php artisan serve --host=127.0.0.1 --port=8000 > /dev/null 2>&1 &');
 
-        //sleep(5);
+        // sleep(5);
     }
 
     protected function tearDown(): void
     {
-        //exec("kill -9 $(lsof -t -i:8000) 2>/dev/null");
+        // exec("kill -9 $(lsof -t -i:8000) 2>/dev/null");
     }
 
     /**
@@ -49,7 +49,7 @@ class PactVerifyTest extends TestCase
             ->setStateChangeUrl(new Uri('http://127.0.0.1:8000/pact-state'));
         $config->setCustomHeaders(
             (new CustomHeaders)
-                ->addHeader('Authorization', 'Bearer '.$apiToken)
+                ->addHeader('Authorization', 'Bearer ' . $apiToken)
         );
 
         if ($level = \getenv('PACT_LOGLEVEL')) {
@@ -60,9 +60,8 @@ class PactVerifyTest extends TestCase
         $urlContract = new Url;
         $urlContract->setUrl(new Uri(self::CONTRACT_URL));
         $verifier->addUrl($urlContract);
-        //To test with the pact contract file locally
-        //$verifier->addFile(self::PACT_PATH.'OrderServiceClient-OrderManagementAPI.json');
-        
+        // To test with the pact contract file locally
+        // $verifier->addFile(self::PACT_PATH.'OrderServiceClient-OrderManagementAPI.json');
 
         $verifyResult = $verifier->verify();
 

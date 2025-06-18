@@ -4,6 +4,7 @@ namespace Src\Sales\Payment\Infraestructure\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PaymentRecord extends Model
 {
@@ -42,5 +43,13 @@ class PaymentRecord extends Model
         return [
             'payed_date' => 'immutable_datetime',
         ];
+    }
+
+    /**
+     * Get the payment schedule associated with the payment record.
+     */
+    public function schedule(): BelongsTo
+    {
+        return $this->belongsTo(PaymentSchedule::class, 'payments_schedule_id');
     }
 }

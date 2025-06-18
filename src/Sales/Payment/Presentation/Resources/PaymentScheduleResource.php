@@ -31,6 +31,7 @@ class PaymentScheduleResource extends JsonResource
                 'status' => $payment->getStatus(),
                 'currency' => $payment->getCurrency(),
                 'order_id' => $payment->getOrderId(),
+                'paymentRecord' => $payment->getPaymentRecord() ? new PaymentRecordResource($payment->getPaymentRecord()) : null,
             ],
         ];
     }

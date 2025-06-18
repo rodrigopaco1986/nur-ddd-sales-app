@@ -14,7 +14,7 @@ class OrderProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //$this->mergeConfigFrom(__DIR__.'/../config/claim_submission.php', 'domain-driven-laravel');
+        // $this->mergeConfigFrom(__DIR__.'/../config/claim_submission.php', 'domain-driven-laravel');
     }
 
     /**
@@ -22,12 +22,12 @@ class OrderProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'order');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'order');
 
-        //Event::listen(DemoEvent::class, DemoListener::class);
-        //$this->loadMigrationsFrom(__DIR__ . '/../../Infrastructure/Database/migrations');
-        //$this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'domain-driven-laravel');
-        //$this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        // Event::listen(DemoEvent::class, DemoListener::class);
+        // $this->loadMigrationsFrom(__DIR__ . '/../../Infrastructure/Database/migrations');
+        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'domain-driven-laravel');
+        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
     }
 }

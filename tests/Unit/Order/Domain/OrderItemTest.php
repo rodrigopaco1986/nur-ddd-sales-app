@@ -14,9 +14,9 @@ use Src\Sales\Shared\Domain\ValueObject\Money;
 class OrderItemTest extends TestCase
 {
     #[Test]
-    public function itShouldCreateAnOrderItem(): void
+    public function it_should_create_an_order_item(): void
     {
-        //Arrange
+        // Arrange
         $faker = Factory::create();
         $orderItem = new OrderItem(
             Str::uuid(),
@@ -28,15 +28,15 @@ class OrderItemTest extends TestCase
             new Money($faker->randomFloat(1, 0, 10), new Currency),
         );
 
-        //Act
+        // Act
         $isInstanceOfOrder = $orderItem instanceof OrderItem;
 
-        //Assert
+        // Assert
         $this->assertTrue($isInstanceOfOrder);
     }
 
     #[Test]
-    public function itShouldThrowAnExceptionWhenServiiceIdIsNotValid(): void
+    public function it_should_throw_an_exception_when_serviice_id_is_not_valid(): void
     {
         $this->expectException(ValueException::class);
 
@@ -53,7 +53,7 @@ class OrderItemTest extends TestCase
     }
 
     #[Test]
-    public function itShouldThrowAnExceptionWhenQuantityIsNotValid(): void
+    public function it_should_throw_an_exception_when_quantity_is_not_valid(): void
     {
         $this->expectException(ValueException::class);
 
@@ -70,7 +70,7 @@ class OrderItemTest extends TestCase
     }
 
     #[Test]
-    public function itShouldThrowAnExceptionWhenPriceIsNotValid(): void
+    public function it_should_throw_an_exception_when_price_is_not_valid(): void
     {
         $this->expectException(ValueException::class);
 
@@ -87,7 +87,7 @@ class OrderItemTest extends TestCase
     }
 
     #[Test]
-    public function itShouldThrowAnExceptionWhenDiscountIsNotValid(): void
+    public function it_should_throw_an_exception_when_discount_is_not_valid(): void
     {
         $this->expectException(ValueException::class);
 
@@ -104,7 +104,7 @@ class OrderItemTest extends TestCase
     }
 
     #[Test]
-    public function itShouldThrowAnExceptionWhenPriceIsLowerThanDiscount(): void
+    public function it_should_throw_an_exception_when_price_is_lower_than_discount(): void
     {
         $this->expectException(ValueException::class);
 

@@ -12,7 +12,7 @@ class InvoiceCreationTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function itCanCreateAnInvoice(): void
+    public function it_can_create_an_invoice(): void
     {
         $token = config('app.api_token');
 
@@ -56,7 +56,7 @@ class InvoiceCreationTest extends TestCase
     }
 
     #[Test]
-    public function itCanNotCreateAnInvoiceAlreadyGenerate(): void
+    public function it_can_not_create_an_invoice_already_generate(): void
     {
         $token = config('app.api_token');
 
@@ -97,7 +97,7 @@ class InvoiceCreationTest extends TestCase
     }
 
     #[Test]
-    public function itCanQueryAnInvoice(): void
+    public function it_can_query_an_invoice(): void
     {
         $token = config('app.api_token');
 
@@ -133,7 +133,7 @@ class InvoiceCreationTest extends TestCase
         $invoice = $response->json();
         $invoiceId = $invoice['data']['invoice']['id'];
 
-        $response = $this->getJson('/invoice/view/'.$invoiceId, [
+        $response = $this->getJson('/invoice/view/' . $invoiceId, [
             'Authorization' => "Bearer $token",
         ]);
 

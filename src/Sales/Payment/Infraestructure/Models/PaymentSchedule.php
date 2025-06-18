@@ -4,6 +4,7 @@ namespace Src\Sales\Payment\Infraestructure\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class PaymentSchedule extends Model
 {
@@ -40,5 +41,13 @@ class PaymentSchedule extends Model
         return [
             'due_date' => 'immutable_datetime',
         ];
+    }
+
+    /**
+     * Get the payment record associated with the payment schedule.
+     */
+    public function record(): HasOne
+    {
+        return $this->hasOne(PaymentRecord::class, 'payments_schedule_id');
     }
 }
