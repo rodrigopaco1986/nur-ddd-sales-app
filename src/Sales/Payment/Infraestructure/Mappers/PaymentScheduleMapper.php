@@ -12,12 +12,18 @@ class PaymentScheduleMapper
 {
     public static function toEntity(EloquentPaymentSchedule $paymentSchedule): PaymentScheduleEntity
     {
+        $paymentRecordEntity = null;
+        if ($paymentSchedule->record) {
+            $paymentRecordEntity = PaymentRecordMapper::toEntity($paymentSchedule->record);
+        }
+
         $paymentScheduleEntity = new PaymentScheduleEntity(
             $paymentSchedule->number,
             new Money($paymentSchedule->amount, new Currency($paymentSchedule->currency)),
             $paymentSchedule->due_date,
             new PaymentStatus($paymentSchedule->status),
             $paymentSchedule->order_id,
+            $paymentRecordEntity,
         );
         $paymentScheduleEntity->setId($paymentSchedule->id);
 
@@ -37,5 +43,20 @@ class PaymentScheduleMapper
             ]);
 
         return $eloquentPaymentScheduleModel;
+    }
+
+    public static function fillModel(EloquentPaymentSchedule $eloquentPaymentSchedule, PaymentScheduleEntity $paymentSchedule): EloquentPaymentSchedule
+    {
+        $eloquentPaymentSchedule
+            ->fill([
+                'number' => $paymentSchedule->getNumber(),
+                'amount' => $paymentSchedule->getAmount(),
+                'due_date' => $paymentSchedule->getDueDate(),
+                'status' => $paymentSchedule->getStatus(),
+                'currency' => $paymentSchedule->getCurrency(),
+                'order_id' => $paymentSchedule->getOrderId(),
+            ]);
+
+        return $eloquentPaymentSchedule;
     }
 }

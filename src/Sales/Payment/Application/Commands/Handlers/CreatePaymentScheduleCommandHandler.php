@@ -3,7 +3,7 @@
 namespace Src\Sales\Payment\Application\Commands\Handlers;
 
 use Src\Sales\Payment\Application\Commands\CreatePaymentScheduleCommand;
-//use Src\Sales\Payment\Domain\Events\OrderCreatedEvent;
+// use Src\Sales\Payment\Domain\Events\OrderCreatedEvent;
 use Src\Sales\Payment\Application\Services\OrderService;
 use Src\Sales\Payment\Domain\Repositories\PaymentScheduleRepositoryInterface;
 use Src\Sales\Payment\Domain\Services\PaymentScheduleDomainService;
@@ -31,7 +31,7 @@ final class CreatePaymentScheduleCommandHandler
             );
 
         if ($paymentScheduleEntitiesSaved) {
-            //OrderCreatedEvent::dispatch($orderEntitySaved, ['generateInvoice' => $command->getGenerateInvoice()]);
+            // OrderCreatedEvent::dispatch($orderEntitySaved, ['generateInvoice' => $command->getGenerateInvoice()]);
         }
 
         return $paymentScheduleEntitiesSaved;

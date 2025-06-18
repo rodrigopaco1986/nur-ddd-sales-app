@@ -12,7 +12,7 @@ class PaymentQueryTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function itCanQueryAScheduledPayment(): void
+    public function it_can_query_a_scheduled_payment(): void
     {
         $token = config('app.api_token');
         $numberOfPayments = 2;
@@ -38,7 +38,7 @@ class PaymentQueryTest extends TestCase
         $order = $response->json();
         $orderId = $order['data']['order']['id'];
 
-        $response = $this->getJson('/payment/view-by-order/'.$orderId, [
+        $response = $this->getJson('/payment/view-by-order/' . $orderId, [
             'Authorization' => "Bearer $token",
         ]);
 

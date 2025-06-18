@@ -13,4 +13,6 @@ interface PaymentScheduleRepositoryInterface
     public function save(PaymentSchedule $paymentSchedule): ?PaymentSchedule;
 
     public function saveMany(array $paymentSchedule): ?array;
+
+    public function update(PaymentSchedule $paymentSchedule): ?PaymentSchedule;
 }

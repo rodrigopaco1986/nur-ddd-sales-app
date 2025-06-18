@@ -6,7 +6,7 @@ use Src\Sales\Company\Domain\Entities\Company;
 
 class CompanyService
 {
-    //TODO: Call from micro service
+    // TODO: Call from micro service
     public function getInfo(): Company
     {
         return new Company(

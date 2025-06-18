@@ -11,7 +11,7 @@ class AuthTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function itCanAccess(): void
+    public function it_can_access(): void
     {
         $token = config('app.api_token');
 
@@ -23,7 +23,7 @@ class AuthTest extends TestCase
     }
 
     #[Test]
-    public function itCannotAccessWithoutBearerToken(): void
+    public function it_cannot_access_without_bearer_token(): void
     {
         $response = $this->get('/');
 
