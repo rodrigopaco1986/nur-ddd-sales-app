@@ -10,6 +10,8 @@ interface InvoiceRepositoryInterface
 
     public function save(Invoice $invoice): ?Invoice;
 
+    public function updateToSentStatus(Invoice $invoice): ?Invoice;
+
     public function count(): int;
 
     public function hasActiveInvoice(string $orderId): bool;

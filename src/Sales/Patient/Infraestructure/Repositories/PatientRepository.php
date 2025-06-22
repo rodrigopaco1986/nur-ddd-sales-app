@@ -53,6 +53,6 @@ class PatientRepository implements PatientRepositoryInterface
             ])->save();
         }
 
-        return $this->save($patient);
+        return PatientMapper::toEntity($eloquentPatient);
     }
 }

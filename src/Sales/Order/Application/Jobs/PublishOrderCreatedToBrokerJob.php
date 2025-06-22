@@ -2,11 +2,11 @@
 
 namespace Src\Sales\Order\Application\Jobs;
 
+use App\Notifications\NotificationProducerInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 use Junges\Kafka\Facades\Kafka;
 use Src\Sales\Order\Application\Events\OrderCreatedIntegrationEvent;
 use Src\Sales\Order\Application\Queries\GetOrderQuery;
@@ -20,7 +20,7 @@ class PublishOrderCreatedToBrokerJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct() {}
+    public function __construct(private NotificationProducerInterface $notificationProducerInterface) {}
 
     public function handle(OrderCreatedIntegrationEvent $orderEvent)
     {
@@ -32,11 +32,10 @@ class PublishOrderCreatedToBrokerJob implements ShouldQueue
 
         $orderResource = new OrderResource($queryOrderHandlerResponse);
 
-        Log::info('Testint to kafka', ['data' => $orderResource->toJson()]);
-
-        Kafka::publish(config('kafka.brokers'))
+        $this->notificationProducerInterface->publish('order.created', 'order', $orderResource->toJson());
+        /*Kafka::publish(config('kafka.brokers'))
             ->onTopic('order.created')
             ->withBodyKey('order', $orderResource->toJson())
-            ->send();
+            ->send();*/
     }
 }
