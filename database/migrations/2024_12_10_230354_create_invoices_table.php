@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedMediumInteger('customer_code');
             $table->string('customer_name', 100);
             $table->string('customer_nit', 50);
-            $table->enum('status', ['CREATED', 'CANCELLED']);
+            $table->enum('status', ['CREATED', 'CANCELLED', 'DELIVERED']);
             $table->string('currency', 3);
             $table->decimal('total', 10, 2);
             $table->uuid('order_id');

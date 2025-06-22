@@ -9,12 +9,15 @@ class CompanyService
     // TODO: Call from micro service
     public function getInfo(): Company
     {
+        $companyConfig = config('company');
+
         return new Company(
-            'Nur-tricenter',
-            '171283817238128',
-            '465A9780DBD5FD71F22F720B938CAF5AE3EB03980654FFCCE54549E74',
-            'AVENIDA CRISTO REDENTOR NRO. 100 ZONA/BARRIO: VICTORIANO RIVERO',
-            '3363939',
+            $companyConfig['name'],
+            $companyConfig['nit'],
+            $companyConfig['authorizationCode'],
+            $companyConfig['address'],
+            $companyConfig['phone'],
+            $companyConfig['email'],
         );
     }
 }
