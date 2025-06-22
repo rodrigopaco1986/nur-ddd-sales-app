@@ -10,13 +10,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "barryvdh/laravel-dompdf": "^3.1",
         "fakerphp/faker": "^1.24",
         "guzzlehttp/guzzle": "^7.0",
         "laravel/framework": "^11.31",
         "laravel/telescope": "^5.9",
         "laravel/tinker": "^2.9",
         "mateusjunges/laravel-kafka": "^2.5",
-        "sentry/sentry-laravel": "^4.13"
+        "sentry/sentry-laravel": "^4.13",
+        "symfony/http-client": "^7.3",
+        "symfony/mailgun-mailer": "^7.3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",

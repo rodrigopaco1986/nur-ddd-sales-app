@@ -8,6 +8,7 @@ use Src\Sales\Invoice\Application\Services\OrderService;
 use Src\Sales\Invoice\Application\Services\PatientService;
 use Src\Sales\Invoice\Application\Services\ServiceService;
 use Src\Sales\Invoice\Domain\Entities\Invoice;
+use Src\Sales\Invoice\Domain\Events\InvoiceCreatedEvent;
 use Src\Sales\Invoice\Domain\Repositories\InvoiceRepositoryInterface;
 use Src\Sales\Invoice\Domain\Services\InvoiceDomainService;
 use Src\Sales\Order\Domain\Entities\OrderItem;
@@ -37,7 +38,9 @@ final class CreateInvoiceHandler
     public function handle(CreateInvoiceCommand $command): ?Invoice
     {
         $orderInfo = $this->orderService->getOrderInfo($command->getOrderId());
-        $customerId = $command->getCustomerId() ? $command->getCustomerId() : $orderInfo->getPatientId();
+        // TODO: Fix when customer is not a patient
+        // $customerId = $command->getCustomerId() ? $command->getCustomerId() : $orderInfo->getPatientId();
+        $customerId = $orderInfo->getPatientId();
         $patientInfo = $this->patientService->getPatientInfo($customerId);
         $companyInfo = (new CompanyService)->getInfo();
 
@@ -55,7 +58,7 @@ final class CreateInvoiceHandler
         );
 
         if ($invoiceEntitySaved) {
-            // OrderCreatedEvent::dispatch($orderEntitySaved, ['generateInvoice' => $command->getGenerateInvoice()]);
+            InvoiceCreatedEvent::dispatch($invoiceEntitySaved, $patientInfo);
         }
 
         return $invoiceEntitySaved;

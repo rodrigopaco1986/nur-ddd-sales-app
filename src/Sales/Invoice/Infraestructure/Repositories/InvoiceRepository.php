@@ -39,6 +39,18 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         return InvoiceMapper::toEntity($eloquentInvoiceModel);
     }
 
+    public function updateToSentStatus(Invoice $invoice): ?Invoice
+    {
+        $eloquentInvoice = EloquentInvoice::find($invoice->getId());
+        if ($eloquentInvoice) {
+            $eloquentInvoice->fill([
+                'status' => InvoiceStatus::DELIVERED()->getStatus(),
+            ])->save();
+        }
+
+        return InvoiceMapper::toEntity($eloquentInvoice);
+    }
+
     public function count(): int
     {
         return EloquentInvoice::count();

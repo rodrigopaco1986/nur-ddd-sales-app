@@ -16,6 +16,6 @@ class InvoiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'invoice');
+        $this->loadViewsFrom(__DIR__ . '/../../Presentation/Views', 'invoice');
     }
 }

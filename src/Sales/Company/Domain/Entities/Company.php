@@ -10,6 +10,7 @@ class Company
         private string $authorizationCode,
         private string $address,
         private string $phone,
+        private string $email,
     ) {}
 
     /**
@@ -50,5 +51,13 @@ class Company
     public function getPhone()
     {
         return $this->phone;
+    }
+
+    /**
+     * Get the value of email
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 }
