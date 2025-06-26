@@ -3,9 +3,11 @@
 namespace Src\Sales\Payment\Infraestructure\Repositories;
 
 use DateTimeImmutable;
+use Src\Sales\Invoice\Domain\Entities\Invoice;
 use Src\Sales\Payment\Domain\Entities\PaymentRecord;
 use Src\Sales\Payment\Domain\Entities\PaymentSchedule;
 use Src\Sales\Payment\Domain\Repositories\PaymentRecordRepositoryInterface;
+use Src\Sales\Payment\Domain\ValueObject\PaymentRecordStatus;
 use Src\Sales\Payment\Infraestructure\Mappers\PaymentRecordMapper;
 use Src\Sales\Payment\Infraestructure\Models\PaymentRecord as EloquentPaymentRecord;
 use Src\Sales\Shared\Domain\ValueObject\Currency;
@@ -51,14 +53,15 @@ class PaymentRecordRepository implements PaymentRecordRepositoryInterface
         return null;
     }
 
-    public function save(PaymentSchedule $paymentSchedule): ?PaymentRecord
+    public function save(PaymentSchedule $paymentSchedule, Invoice $invoice): ?PaymentRecord
     {
         $paymentRecord = new PaymentRecord(
             new Money($paymentSchedule->getAmount(), new Currency($paymentSchedule->getCurrency())),
             new DateTimeImmutable,
-            'rodrigo',
-            'paco',
-            '5852695',
+            new PaymentRecordStatus(PaymentRecordStatus::CREATED()->getStatus()),
+            $invoice->getCustomerName(),
+            '',
+            $invoice->getNit(),
             $paymentSchedule->getOrderId(),
             $paymentSchedule->getId(),
         );
@@ -67,5 +70,17 @@ class PaymentRecordRepository implements PaymentRecordRepositoryInterface
         $eloquentPaymentRecordModel->save();
 
         return PaymentRecordMapper::toEntity($eloquentPaymentRecordModel);
+    }
+
+    public function updateToSentStatus(PaymentRecord $payment): ?PaymentRecord
+    {
+        $eloquentPayment = EloquentPaymentRecord::find($payment->getId());
+        if ($eloquentPayment) {
+            $eloquentPayment->fill([
+                'status' => PaymentRecordStatus::DELIVERED()->getStatus(),
+            ])->save();
+        }
+
+        return PaymentRecordMapper::toEntity($eloquentPayment);
     }
 }

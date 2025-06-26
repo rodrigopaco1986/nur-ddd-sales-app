@@ -5,7 +5,7 @@ namespace Src\Sales\Order\Infraestructure\Events\Kafka;
 use App\Notifications\NotificationProducerInterface;
 use Illuminate\Support\Facades\Log;
 use Junges\Kafka\Facades\Kafka;
-use Src\Sales\Order\Domain\Exceptions\KafkaNotificationException;
+use Src\Sales\Order\Infraestructure\Exceptions\KafkaNotificationException;
 use Throwable;
 
 class KafkaNotificationProducer implements NotificationProducerInterface

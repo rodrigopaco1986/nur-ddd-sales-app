@@ -26,6 +26,7 @@ class PaymentRecord extends Model
         'amount',
         'currency',
         'payed_date',
+        'status',
         'first_name',
         'last_name',
         'dni',

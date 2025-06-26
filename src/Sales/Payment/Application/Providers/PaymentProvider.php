@@ -16,6 +16,6 @@ class PaymentProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'payment');
+        $this->loadViewsFrom(__DIR__ . '/../../Presentation/Views', 'payment');
     }
 }
