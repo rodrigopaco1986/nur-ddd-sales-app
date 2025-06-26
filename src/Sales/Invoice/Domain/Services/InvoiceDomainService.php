@@ -3,7 +3,10 @@
 namespace Src\Sales\Invoice\Domain\Services;
 
 use DateTimeImmutable;
-use Src\Sales\Company\Domain\Entities\Company;
+use Src\Sales\Invoice\Application\Services\CompanyService;
+use Src\Sales\Invoice\Application\Services\OrderService;
+use Src\Sales\Invoice\Application\Services\PatientService;
+use Src\Sales\Invoice\Application\Services\ServiceService;
 use Src\Sales\Invoice\Domain\Entities\Invoice;
 use Src\Sales\Invoice\Domain\Entities\InvoiceItem;
 use Src\Sales\Invoice\Domain\Exceptions\InvoiceAlredyCreatedException;
@@ -12,8 +15,7 @@ use Src\Sales\Invoice\Domain\Exceptions\PatientNotFoundException;
 use Src\Sales\Invoice\Domain\Exceptions\ServiceNotFoundException;
 use Src\Sales\Invoice\Domain\Repositories\InvoiceRepositoryInterface;
 use Src\Sales\Invoice\Domain\ValueObject\InvoiceStatus;
-use Src\Sales\Order\Domain\Entities\Order;
-use Src\Sales\Patient\Domain\Entities\Patient;
+use Src\Sales\Order\Domain\Entities\OrderItem;
 use Src\Sales\Shared\Domain\ValueObject\Currency;
 use Src\Sales\Shared\Domain\ValueObject\Money;
 
@@ -21,18 +23,29 @@ class InvoiceDomainService
 {
     private InvoiceRepositoryInterface $invoiceRepository;
 
+    private OrderService $orderService;
+
+    private PatientService $patientService;
+
+    private ServiceService $serviceService;
+
     public function __construct(
         InvoiceRepositoryInterface $invoiceRepository,
+        OrderService $orderService,
+        PatientService $patientService,
+        ServiceService $serviceService
     ) {
         $this->invoiceRepository = $invoiceRepository;
+        $this->orderService = $orderService;
+        $this->patientService = $patientService;
+        $this->serviceService = $serviceService;
     }
 
     public function create(
-        ?Order $orderInfo,
-        array $servicesInfo,
-        ?Company $companyInfo,
-        ?Patient $patientInfo,
+        string $orderId,
     ): ?Invoice {
+
+        $orderInfo = $this->orderService->getOrderInfo($orderId);
 
         if (! $orderInfo) {
             throw new OrderNotFoundException;
@@ -42,10 +55,21 @@ class InvoiceDomainService
             throw new InvoiceAlredyCreatedException;
         }
 
+        // $customerId = $command->getCustomerId() ? $command->getCustomerId() : $orderInfo->getPatientId();
+        $customerId = $orderInfo->getPatientId();
+        $patientInfo = $this->patientService->getPatientInfo($customerId);
+        $companyInfo = (new CompanyService)->getInfo();
+
         if (! $patientInfo) {
             throw new PatientNotFoundException;
         }
 
+        $items = $orderInfo?->getItems() ?? [];
+        $serviceIds = collect($items)->map(function (OrderItem $value) {
+            return $value->getServiceId();
+        })->toArray();
+
+        $servicesInfo = $this->serviceService->getServicesInfo($serviceIds);
         $currency = new Currency($orderInfo->getCurrency());
 
         $invoice = new Invoice(
@@ -56,6 +80,7 @@ class InvoiceDomainService
             $patientInfo->getId(),
             $patientInfo->getCode(),
             $patientInfo->getName(),
+            $patientInfo->getEmail(),
             $patientInfo->getNit(),
             InvoiceStatus::CREATED(),
             $currency,
@@ -93,4 +118,6 @@ class InvoiceDomainService
         return $invoiceEntitySaved;
 
     }
+
+    public function getInvoiceInfo() {}
 }

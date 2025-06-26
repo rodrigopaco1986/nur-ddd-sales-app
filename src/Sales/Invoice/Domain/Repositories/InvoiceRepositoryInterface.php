@@ -8,6 +8,8 @@ interface InvoiceRepositoryInterface
 {
     public function findById(string $id): ?Invoice;
 
+    public function findByOrderId(string $orderId): ?Invoice;
+
     public function save(Invoice $invoice): ?Invoice;
 
     public function updateToSentStatus(Invoice $invoice): ?Invoice;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Sales\Order\Domain\Exceptions;
+namespace Src\Sales\Order\Infraestructure\Exceptions;
 
 use App\Exceptions\DomainException;
 

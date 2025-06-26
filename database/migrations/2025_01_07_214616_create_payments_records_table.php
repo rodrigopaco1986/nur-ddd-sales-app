@@ -16,6 +16,7 @@ return new class extends Migration
             $table->decimal('amount', 8, 2);
             $table->string('currency', 3);
             $table->dateTime('payed_date');
+            $table->enum('status', ['CREATED', 'DELIVERED']);
             $table->string('first_name', 100);
             $table->string('last_name', 100);
             $table->string('dni', 20);

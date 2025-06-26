@@ -3,8 +3,10 @@
 namespace Src\Sales\Payment\Presentation\Controllers;
 
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Src\Sales\Invoice\Infraestructure\Repositories\InvoiceRepository;
 use Src\Sales\Payment\Application\Commands\CreatePaymentRecordCommand;
 use Src\Sales\Payment\Application\Commands\Handlers\CreatePaymentRecordCommandHandler;
+use Src\Sales\Payment\Application\Services\InvoiceService;
 use Src\Sales\Payment\Infraestructure\Repositories\PaymentRecordRepository;
 use Src\Sales\Payment\Infraestructure\Repositories\PaymentScheduleRepository;
 use Src\Sales\Payment\Presentation\Requests\MakePaymentRequest;
@@ -22,7 +24,11 @@ class MakePaymentController extends Controller
         $paymentScheduleId = $validated['payment_schedule_id'];
 
         $commandRecord = new CreatePaymentRecordCommand($paymentScheduleId);
-        $commandRecordHandlerResponse = (new CreatePaymentRecordCommandHandler(new PaymentRecordRepository, new PaymentScheduleRepository))
+        $commandRecordHandlerResponse = (new CreatePaymentRecordCommandHandler(
+            new PaymentRecordRepository,
+            new PaymentScheduleRepository,
+            new InvoiceService(new InvoiceRepository),
+        ))
             ->handle($commandRecord);
 
         if ($commandRecordHandlerResponse) {

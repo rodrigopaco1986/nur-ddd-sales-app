@@ -27,6 +27,7 @@ class PaymentRecordResource extends JsonResource
                 'id' => $payment->getId(),
                 'amount' => $payment->getAmount(),
                 'payed_date' => $payment->getPayedDate(),
+                'status' => $payment->getStatus(),
                 'first_name' => $payment->getFirstName(),
                 'last_name' => $payment->getLastName(),
                 'dni' => $payment->getDni(),

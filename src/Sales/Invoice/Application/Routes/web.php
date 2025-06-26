@@ -20,7 +20,7 @@ Route::get('/preview/{type}/{id}', function (string $type, string $id) {
     $pdfContent = $pdf->output();
 
     $response = match ($type) {
-        'email' => new InvoiceMailable($pdfContent, $invoice->getId())->render(),
+        'email' => (new InvoiceMailable($pdfContent, $invoice->getId()))->render(),
         'pdf' => Response::make($pdfContent, 200, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="invoice-{$id}.pdf"',

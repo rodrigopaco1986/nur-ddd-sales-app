@@ -20,6 +20,7 @@ class Invoice
         private string $customerId,
         private int $customerCode,
         private string $customerName,
+        private string $customerEmail,
         private string $customerNit,
         private InvoiceStatus $status,
         private Currency $currency,
@@ -105,6 +106,14 @@ class Invoice
     public function getCustomerName()
     {
         return $this->customerName;
+    }
+
+    /**
+     * Get the value of customerEmail
+     */
+    public function getCustomerEmail()
+    {
+        return $this->customerEmail;
     }
 
     /**

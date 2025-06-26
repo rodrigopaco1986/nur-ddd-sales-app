@@ -3,7 +3,6 @@
 namespace Src\Sales\Invoice\Application\Commands\Handlers;
 
 use Src\Sales\Invoice\Application\Commands\CreateInvoiceCommand;
-use Src\Sales\Invoice\Application\Services\CompanyService;
 use Src\Sales\Invoice\Application\Services\OrderService;
 use Src\Sales\Invoice\Application\Services\PatientService;
 use Src\Sales\Invoice\Application\Services\ServiceService;
@@ -11,7 +10,6 @@ use Src\Sales\Invoice\Domain\Entities\Invoice;
 use Src\Sales\Invoice\Domain\Events\InvoiceCreatedEvent;
 use Src\Sales\Invoice\Domain\Repositories\InvoiceRepositoryInterface;
 use Src\Sales\Invoice\Domain\Services\InvoiceDomainService;
-use Src\Sales\Order\Domain\Entities\OrderItem;
 
 final class CreateInvoiceHandler
 {
@@ -37,27 +35,21 @@ final class CreateInvoiceHandler
 
     public function handle(CreateInvoiceCommand $command): ?Invoice
     {
-        $orderInfo = $this->orderService->getOrderInfo($command->getOrderId());
-        // TODO: Fix when customer is not a patient
-        // $customerId = $command->getCustomerId() ? $command->getCustomerId() : $orderInfo->getPatientId();
-        $customerId = $orderInfo->getPatientId();
-        $patientInfo = $this->patientService->getPatientInfo($customerId);
-        $companyInfo = (new CompanyService)->getInfo();
+        $orderId = $command->getOrderId();
 
-        $items = $orderInfo?->getItems() ?? [];
-        $serviceIds = collect($items)->map(function (OrderItem $value) {
-            return $value->getServiceId();
-        })->toArray();
-        $servicesInfo = $this->serviceService->getServicesInfo($serviceIds);
-
-        $invoiceEntitySaved = (new InvoiceDomainService($this->invoiceRepository))->create(
-            $orderInfo,
-            $servicesInfo,
-            $companyInfo,
-            $patientInfo,
+        $invoiceEntitySaved = (new InvoiceDomainService(
+            $this->invoiceRepository,
+            $this->orderService,
+            $this->patientService,
+            $this->serviceService,
+        ))->create(
+            $command->getOrderId()
         );
 
         if ($invoiceEntitySaved) {
+            $orderInfo = $this->orderService->getOrderInfo($orderId);
+            $customerId = $orderInfo->getPatientId();
+            $patientInfo = $this->patientService->getPatientInfo($customerId);
             InvoiceCreatedEvent::dispatch($invoiceEntitySaved, $patientInfo);
         }
 
