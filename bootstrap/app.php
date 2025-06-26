@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withProviders([
         \Src\Sales\Order\Application\Providers\OrderProvider::class,
         \Src\Sales\Invoice\Application\Providers\InvoiceProvider::class,
+        \Src\Sales\Payment\Application\Providers\PaymentProvider::class,
         \Src\Sales\Patient\Application\Providers\PatientProvider::class,
         \Src\Sales\Service\Application\Providers\ServiceProvider::class,
     ])

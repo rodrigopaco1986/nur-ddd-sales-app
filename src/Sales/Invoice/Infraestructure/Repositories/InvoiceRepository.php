@@ -23,6 +23,17 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         return null;
     }
 
+    public function findByOrderId(string $orderId): ?Invoice
+    {
+        $eloquentInvoice = EloquentInvoice::where('order_id', $orderId)->first();
+
+        if ($eloquentInvoice) {
+            return InvoiceMapper::toEntity($eloquentInvoice);
+        }
+
+        return null;
+    }
+
     public function save(Invoice $invoice): ?Invoice
     {
         $eloquentInvoiceModel = InvoiceMapper::toModel($invoice);

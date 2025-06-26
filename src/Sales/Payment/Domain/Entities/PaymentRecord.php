@@ -3,6 +3,7 @@
 namespace Src\Sales\Payment\Domain\Entities;
 
 use DateTimeImmutable;
+use Src\Sales\Payment\Domain\ValueObject\PaymentRecordStatus;
 use Src\Sales\Shared\Domain\ValueObject\Money;
 
 class PaymentRecord
@@ -12,6 +13,7 @@ class PaymentRecord
     public function __construct(
         private Money $amount,
         private DateTimeImmutable $payedDate,
+        private PaymentRecordStatus $status,
         private string $firstName,
         private string $lastName,
         private string $dni,
@@ -59,6 +61,14 @@ class PaymentRecord
     public function getPayedDate(): DateTimeImmutable
     {
         return $this->payedDate;
+    }
+
+    /**
+     * Get the value of status
+     */
+    public function getStatus(): string
+    {
+        return $this->status->getStatus();
     }
 
     /**

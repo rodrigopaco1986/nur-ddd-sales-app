@@ -32,6 +32,7 @@ class InvoiceResource extends JsonResource
                 'customer_id' => $invoice->getCustomerId(),
                 'customer_code' => $invoice->getCustomerCode(),
                 'customer_name' => $invoice->getCustomerName(),
+                'customer_email' => $invoice->getCustomerEmail(),
                 'customer_nit' => $invoice->getCustomerNit(),
                 'status' => $invoice->getStatus(),
                 'currency' => $invoice->getCurrency(),

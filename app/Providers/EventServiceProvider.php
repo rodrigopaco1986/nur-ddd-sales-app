@@ -12,7 +12,11 @@ use Src\Sales\Order\Application\Events\OrderCreatedIntegrationEvent;
 use Src\Sales\Order\Application\Jobs\PublishOrderCreatedToBrokerJob;
 use Src\Sales\Order\Application\Listeners\DispatchOrderCreatedIntegrationEvent;
 use Src\Sales\Order\Domain\Events\OrderCreatedEvent;
+use Src\Sales\Payment\Application\Jobs\SendPaymentRecordEmailJob;
 use Src\Sales\Payment\Application\Listeners\CreateOrderPaymentSchedules;
+use Src\Sales\Payment\Application\Listeners\UpdatePaymentRecordStatus;
+use Src\Sales\Payment\Domain\Events\PaymentRecordDistpachedEvent;
+use Src\Sales\Payment\Domain\Events\PaymentRecordRegisteredEvent;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -23,15 +27,22 @@ class EventServiceProvider extends ServiceProvider
             CreateOrderInvoice::class,
             DispatchOrderCreatedIntegrationEvent::class,
         ],
+
         InvoiceCreatedEvent::class => [
             SendInvoiceEmailJob::class,
         ],
+
         InvoiceDistpachedEvent::class => [
             UpdateInvoiceStatus::class,
         ],
-        // PaymentRegisteredEvent::class => [
-        //    NotifyPaymentRegistered::class,
-        // ],
+
+        PaymentRecordRegisteredEvent::class => [
+            SendPaymentRecordEmailJob::class,
+        ],
+
+        PaymentRecordDistpachedEvent::class => [
+            UpdatePaymentRecordStatus::class,
+        ],
 
         // INTEGRATION EVENTS
         OrderCreatedIntegrationEvent::class => [
