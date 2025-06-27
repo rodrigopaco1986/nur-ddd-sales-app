@@ -26,6 +26,8 @@ class PatientBrokerHandler
     {
         $topicName = $message->getTopicName();
 
+        Log::info('New patient cateched...');
+
         // Check if a handler is registered for the received topic.
         if (! isset($this->topicMap[$topicName])) {
             Log::warning("No Kafka handler registered for topic [{$topicName}]. Ignoring message.");
@@ -45,8 +47,6 @@ class PatientBrokerHandler
 
             $handler = app($handlerClass);
             $handler($message);
-
-            $message->commit();
 
         } catch (Throwable $e) {
             Log::error("Exception occurred while handling Kafka message for topic [{$topicName}].", [
