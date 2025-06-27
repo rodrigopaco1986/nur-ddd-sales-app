@@ -51,8 +51,11 @@ class PatientRepository implements PatientRepositoryInterface
                 'phone' => $patient->getPhone(),
                 'email' => $patient->getEmail(),
             ])->save();
-        }
 
-        return PatientMapper::toEntity($eloquentPatient);
+            return PatientMapper::toEntity($eloquentPatient);
+
+        } else {
+            return $this->save($patient);
+        }
     }
 }
