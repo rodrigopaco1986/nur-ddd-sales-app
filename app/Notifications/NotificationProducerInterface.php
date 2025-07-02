@@ -9,7 +9,7 @@ interface NotificationProducerInterface
      *
      * @param  string  $topic  The topic or queue name to publish to.
      * @param  string  $key  The message key, used for partitioning.
-     * @param  string  $payload  The message body.
+     * @param  mixed  $payload  The message body.
      */
-    public function publish(string $topic, string $key, string $payload): void;
+    public function publish(string $topic, ?string $key, $payload): void;
 }
