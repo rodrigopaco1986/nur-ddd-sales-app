@@ -7,7 +7,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Junges\Kafka\Facades\Kafka;
 use Src\Sales\Order\Application\Events\OrderCreatedIntegrationEvent;
 use Src\Sales\Order\Application\Queries\GetOrderQuery;
 use Src\Sales\Order\Application\Queries\Handlers\GetOrderHandler;
@@ -31,11 +30,8 @@ class PublishOrderCreatedToBrokerJob implements ShouldQueue
             ->handle($queryOrder);
 
         $orderResource = new OrderResource($queryOrderHandlerResponse);
+        $orderResourceDecoded = json_decode($orderResource->toJson(), true);
 
-        $this->notificationProducerInterface->publish('order.created', 'order', $orderResource->toJson());
-        /*Kafka::publish(config('kafka.brokers'))
-            ->onTopic('order.created')
-            ->withBodyKey('order', $orderResource->toJson())
-            ->send();*/
+        $this->notificationProducerInterface->publish('order.created', null, $orderResourceDecoded);
     }
 }

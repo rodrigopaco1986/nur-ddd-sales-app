@@ -16,14 +16,21 @@ class KafkaNotificationProducer implements NotificationProducerInterface
      * @param  array  $payload
      * @return bool
      */
-    public function publish(string $topic, string $key, string $payload): void
+    public function publish(string $topic, ?string $key, $payload): void
     {
         try {
 
-            Kafka::publish(config('kafka.brokers'))
-                ->onTopic($topic)
-                ->withBodyKey($key, $payload)
-                ->send();
+            if ($key) {
+                Kafka::publish(config('kafka.brokers'))
+                    ->onTopic($topic)
+                    ->withBodyKey($key, $payload)
+                    ->send();
+            } else {
+                Kafka::publish(config('kafka.brokers'))
+                    ->onTopic($topic)
+                    ->withBody($payload)
+                    ->send();
+            }
 
         } catch (Throwable $e) {
             Log::error("Failed to publish message to Kafka topic [{$topic}].", [
